@@ -16,12 +16,12 @@ exports.findById = function(req, res){
 };
 
 exports.add = function(req, res) {
-  console.log(req.body);
   Objective.create(req.body, function (err, obj) {
     if (err) return console.log(err);
     return res.send(obj);
   });
 }
+
 exports.update = function(req, res) {
   var id = req.params.id;
   var updates = req.body;
@@ -30,13 +30,19 @@ exports.update = function(req, res) {
     function (err, numberAffected) {
       if (err) return console.log(err);
       console.log('Updated %d Objectives', numberAffected);
-      res.send(202);
+      res.sendStatus(202);
   });
 }
+
 exports.addKeyResult = function (req, res) {
   var id = req.params.id;
-  var keyResult = req.body;
-  console.log('Requested adding new key Result ', keyResult);
+  Objective.update({"_id":id}, 
+    {$push: {keyresults: req.body}},
+    function (err, numberAffected) {
+      if (err) return console.log(err);
+      console.log('Updated %d Objectives', numberAffected);
+      res.sendStatus(202);
+  });
 }
 exports.delete = function(req, res){
   var id = req.params.id;

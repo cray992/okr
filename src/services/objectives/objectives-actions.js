@@ -12,6 +12,13 @@ export function saveObjectiveCompleted (data) {
 	}
 }
 
+export function saveKeyResultsCompleted (data) {
+	return  {
+		type: "SAVE_KEY_RESULT_RETURNED",
+		payload: data
+	}
+}
+
 export function saveNewObjective(data) {
 	return (dispatch) => {
 		return fetch('http://localhost:3001/objectives', {
@@ -27,13 +34,18 @@ export function saveNewObjective(data) {
 	}
 }
 
-export function saveNewKeyResult(data) {
+export function saveNewKeyResult(objectiveId, data) {
+	console.log(objectiveId, data);
 	return (dispatch) => {
-		return fetch('http://localhost:3001/objectives/{id}/key-results', {
+		return fetch('http://localhost:3001/objectives/'+objectiveId+'/keyresults', {
 			method: "POST",
-			body: data
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({name: data})
 		})
-		// .then((data) => getPortfolios())
+		.then(() => dispatch(saveKeyResultsCompleted(data)))
 	}
 }
 

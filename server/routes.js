@@ -7,7 +7,7 @@ const routes = function(app){
 	app.put('/objectives/:id', objectives.update);
 	app.delete('/objectives/:id', objectives.delete);
 
-	app.post('/objectives/:id/keyResults', objectives.addKeyResult);
+	app.post('/objectives/:id/keyresults', objectives.addKeyResult);
 }
 
 module.exports = routes;

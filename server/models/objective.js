@@ -2,7 +2,8 @@ var mongoose = require('mongoose'),
 Schema = mongoose.Schema;
 
 var ObjectiveSchema = new Schema({
-  name: String
+  name: String,
+  keyresults: [{name: String}]
 });
 
 ObjectiveSchema.pre('save', function(next) {

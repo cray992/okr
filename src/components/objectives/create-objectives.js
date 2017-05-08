@@ -59,7 +59,7 @@ class CreateObjectives extends Component {
   }
 
   handleKeyResultsSubmit = ({keyresult}) => {
-    console.log('>>>>>>>>>>>>>>>>>>> ', keyresult);
+    this.props.actions.saveNewKeyResult(this.props.currentObjective._id, keyresult);    
   }
 
 	render() {
@@ -90,7 +90,9 @@ class CreateObjectives extends Component {
 
               <Row>
                 <Col md={8}>
-                  <KeyResultsList />
+                  {this.props.currentKeyResults &&
+                    <KeyResultsList keyresults={this.props.currentKeyResults}/>
+                  }
                 </Col>
               </Row>
             </Grid>
@@ -124,7 +126,9 @@ CreateObjectives = reduxForm({
 // Redux hook functions to connect and fetch data from the store
 export const mapStateToProps = ( state ) => {
   return (
-    { currentObjective: state.objectives.currentObjective }
+    { currentObjective: state.objectives.currentObjective,
+      currentKeyResults: state.objectives.currentKeyResults
+     }
   )
 }
 

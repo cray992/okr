@@ -8,12 +8,17 @@ export default ( state = initialObjectives, { type, payload } ) => {
   switch (type) {
     case "SAVE_OBJECTIVE_RETURNED":
       return {currentObjective: payload};
+    case "SAVE_KEY_RESULT_RETURNED":
+
+      const newState = (
+        state.currentKeyResults ?
+          {...state, currentKeyResults: [...state.currentKeyResults, payload ] }
+          : {...state, currentKeyResults: [ payload ] }
+          ); 
+
+      return newState;
   	case "GET_OBJECTIVES":
   		return [...payload];
-  	case "SAVE_NEW_OBJECTIVE":
-  		return [...payload];
-    case "SAVE_NEW_KEY_RESULT":
-      return [...payload];
   	default: 
   		return state;
   }
