@@ -55,7 +55,6 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
 
 class CreateObjectives extends Component {
   onSubmit = (data) => {
-    console.log('############## ', data);
     this.props.actions.saveNewObjective(data);
   }
 
@@ -64,36 +63,52 @@ class CreateObjectives extends Component {
   }
 
 	render() {
-    const { handleSubmit, pristine, reset, submitting } = this.props;
+    const { 
+      handleSubmit, 
+      pristine, 
+      reset, 
+      submitting,
+      currentObjective, 
+    } = this.props;
 
 		return(
       <MuiThemeProvider muiTheme={muiTheme}>
 		    <div style={style} >
-        <Grid>
-            <form onSubmit={handleSubmit(this.onSubmit)}>
-            <Row>
-              <Col md={8}>
-                <Field name="objective" component={renderTextField} label="Objective"/>
-              </Col>
+          {currentObjective ? (
+            <Grid>
+              <Row>
+                <Col md={12}>
+                  <div>Objective: {currentObjective.name}</div>
+                </Col>
+              </Row>
 
-              <Col md={4}>
-                <RaisedButton label="Save Objective" type="submit"/>
-              </Col>
-            </Row>
-            </form>
+              <Row>
+                <Col md={12}>
+                  <KeyResultForm onSubmit={this.handleKeyResultsSubmit}/>
+                </Col>
+              </Row>
 
-            <Row>
-              <Col md={12}>
-                <KeyResultForm onSubmit={this.handleKeyResultsSubmit}/>
-              </Col>
-            </Row>
+              <Row>
+                <Col md={8}>
+                  <KeyResultsList />
+                </Col>
+              </Row>
+            </Grid>
+          ) : (
+            <Grid>
+              <form onSubmit={handleSubmit(this.onSubmit)}>
+                <Row>
+                  <Col md={8}>
+                    <Field name="objective" component={renderTextField} label="Objective"/>
+                  </Col>
 
-            <Row>
-              <Col md={8}>
-                <KeyResultsList />
-              </Col>
-            </Row>
-          </Grid>
+                  <Col md={4}>
+                    <RaisedButton label="Save Objective" type="submit"/>
+                  </Col>
+                </Row>
+              </form>
+            </Grid>
+          )}
 				</div>
 			</MuiThemeProvider>
     );
@@ -107,7 +122,11 @@ CreateObjectives = reduxForm({
 })(CreateObjectives);
 
 // Redux hook functions to connect and fetch data from the store
-export const mapStateToProps = ( state ) => ({ });
+export const mapStateToProps = ( state ) => {
+  return (
+    { currentObjective: state.objectives.currentObjective }
+  )
+}
 
 export const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(actions, dispatch)

@@ -7,8 +7,7 @@ const initialObjectives =
 export default ( state = initialObjectives, { type, payload } ) => {
   switch (type) {
     case "SAVE_OBJECTIVE_RETURNED":
-      console.log(state);
-      return [...state, ...payload];
+      return {currentObjective: payload};
   	case "GET_OBJECTIVES":
   		return [...payload];
   	case "SAVE_NEW_OBJECTIVE":
