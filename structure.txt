@@ -1,0 +1,36 @@
+src
+	- components
+		- auth
+			- JSX
+			- CSS
+	- services
+		- auth
+			- actions - API
+			- reducer
+			- constants (can have part of actions)
+			- 
+		- protfolio
+			- actions
+			- reducer
+		- main_reducer.js
+server
+	- apis
+		- portfolio-api
+			- manage-portfolo.js
+			- 
+		- auth-api.js
+	- middleware
+		- ...
+	- utilities
+	- routes.js
+	- server-dev.js
+	- server-prod.js
+
+
+
+_ for CSS
+
+
+
+TODOS:
+// Create Analyis route and link tab to route
