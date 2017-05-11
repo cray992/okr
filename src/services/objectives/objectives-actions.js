@@ -1,3 +1,5 @@
+import {reset} from 'redux-form';
+
 export function getObjectivesCompleted (data) {
 	return  {
 		type: "GET_OBJECTIVES",
@@ -45,6 +47,7 @@ export function saveNewKeyResult(objectiveId, data) {
       },
       body: JSON.stringify({name: data})
 		})
+		.then(() => dispatch(reset('keyresultform')))
 		.then(() => dispatch(saveKeyResultsCompleted(data)))
 	}
 }

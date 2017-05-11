@@ -59,7 +59,7 @@ class CreateObjectives extends Component {
   }
 
   handleKeyResultsSubmit = ({keyresult}) => {
-    this.props.actions.saveNewKeyResult(this.props.currentObjective._id, keyresult);    
+    this.props.actions.saveNewKeyResult(this.props.currentObjective._id, keyresult);
   }
 
 	render() {
@@ -78,7 +78,7 @@ class CreateObjectives extends Component {
             <Grid>
               <Row>
                 <Col md={12}>
-                  <div>Objective: {currentObjective.name}</div>
+                  <h3>Objective: {currentObjective.name}</h3>
                 </Col>
               </Row>
 
@@ -101,11 +101,11 @@ class CreateObjectives extends Component {
               <form onSubmit={handleSubmit(this.onSubmit)}>
                 <Row>
                   <Col md={8}>
-                    <Field name="objective" component={renderTextField} label="Objective"/>
+                    <Field name="objective" component={renderTextField} label="Enter Objective"/>
                   </Col>
 
                   <Col md={4}>
-                    <RaisedButton label="Save Objective" type="submit"/>
+                    <RaisedButton label="Save" type="submit"/>
                   </Col>
                 </Row>
               </form>

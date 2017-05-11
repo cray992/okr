@@ -23,6 +23,7 @@ app.use(function (req, res, next) {
 });
 
 require('./models/objective'); // Load schema to have it available for server
+require('./models/employee');
 require('./routes')(app);
 
 app.listen(3001);
