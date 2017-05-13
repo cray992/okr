@@ -3,29 +3,29 @@ import { Field, reduxForm } from 'redux-form';
 import TextField from 'material-ui/TextField'
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import RaisedButton from 'material-ui/RaisedButton';
-import MenuItem from 'material-ui/MenuItem';
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
-import * as actions from '../../services/objectives/objectives-actions';
+import * as empActions from '../../services/employees/employees-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import AutoCompleteAsync from '../utils/autocomplete-async';
 
 const validate = values => {
   const errors = {}
-  const requiredFields = [ 'keyresult' ]
+  const requiredFields = [ 'keyresult', 'owner' ]
   requiredFields.forEach(field => {
+    console.log('Values: ', values);
     if (!values[ field ]) {
       errors[ field ] = 'Required'
     }
   })
+
+  console.log('owner value: ', values.owner);
 
   if (values.target && !/^\d+$/i.test(values.target)) {
     errors.target = 'Please enter a numeric value.'
   }
   return errors
 }
-
+//
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField hintText={label}
     floatingLabelText={label}
@@ -36,66 +36,11 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
   />
 )
 
-var getOwnerOptions = function(input) {
-  setTimeout(function() {
-    this.props.actions.saveNewObjective(input.value)
-  }, 500);
-};
+// value={{val: props.value}}
+// onChange={param => props.onChange(param.val)}
 
-var getTagOptions = function(input, callback) {
-  setTimeout(function() {
-    callback(null, {
-      options: [
-        { value: 'one', label: 'One' },
-        { value: 'two', label: 'Two' }
-      ],
-      // CAREFUL! Only set this to true when there are no more options,
-      // or more specific queries will not be sent to the server.
-      complete: true
-    });
-  }, 500);
-};
-
-const unitOptions = [
-    { value: 'empty', label: 'None' },
-    { value: 'Dollars', label: 'Dollars' },
-    { value: 'Percentage', label: 'Percentage' },
-    { value: 'Leads', label: 'Leads' }    
-];
-
-const renderSelectAsync = ({loadOptions}) => (
-  <Select.Async 
-    value={this.state.value} // objective owner from redux
-    onChange={this.onChange} 
-    onValueClick={this.gotoUser} 
-    valueKey="id" 
-    labelKey="login" 
-    loadOptions={this.getUsers} 
-    backspaceRemoves={this.state.backspaceRemoves} />
-);
-
-const renderSelect = ({input, options, onInputChange, loadOptions}) => (
-    <Select
-      {...input}
-      value={input.values}
-      {...options}
-      {...loadOptions}
-      multi={true}
-      {...onInputChange}
-      onChange={(value) => {
-          console.log(input);
-          console.log(value);
-        }
-      }
-      onBlur={() => {
-        input.onBlur([...input.value]);
-      }
-    }
-    />
-);
-
-const handleChange = (value) => {
-  console.log(value);
+const logChange = () => {
+  console.log('field value');
 }
 
 let KeyResultForm = props => {
@@ -114,10 +59,27 @@ let KeyResultForm = props => {
 
         <Row>
           <Col md={4}>
-            <AutoCompleteAsync label='Owner'/>
+            <Field name="owner"
+                component={AutoCompleteAsync}
+                placeholder="Owner"
+                resultsValueKey="_id"
+                resultsLabelKey="name"
+                callback={props.empActions.findEmployeesByName}
+                callbackUrl="http://localhost:3001/employees/find/"
+                results={props.employee_results}
+            />  
           </Col>
           <Col md={4}>
-            <Field name="tags" component={renderSelect} label="Tags" loadOptions={getTagOptions}/>
+            <Field name="tags"
+                component={AutoCompleteAsync}
+                placeholder="Tags"
+                multi = {true}
+                resultsValueKey="_id"
+                resultsLabelKey="name"
+                callback={props.empActions.findEmployeesByName}
+                callbackUrl="http://localhost:3001/employees/find/"
+                results={props.employee_results}
+            />
           </Col>
         </Row>
 
@@ -128,7 +90,15 @@ let KeyResultForm = props => {
         </Row>
         <Row>
           <Col md={4}>
-            <Field name="units" component={renderSelect} options={unitOptions} label="Units"/>
+            <Field name="units"
+                component={AutoCompleteAsync}
+                placeholder="Units"
+                resultsValueKey="_id"
+                resultsLabelKey="name"
+                callback={props.empActions.findEmployeesByName}
+                callbackUrl="http://localhost:3001/employees/find/"
+                results={props.employee_results}
+            />
           </Col>
         </Row>
       </form>
@@ -153,7 +123,7 @@ export const mapStateToProps = ( state ) => {
 }
 
 export const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(actions, dispatch)
+  empActions: bindActionCreators(empActions, dispatch),  
 });
 
 export default connect (mapStateToProps, mapDispatchToProps) (KeyResultForm);

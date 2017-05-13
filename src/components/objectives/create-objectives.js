@@ -10,8 +10,10 @@ import KeyResultForm from './key-result-form';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { Field, reduxForm } from 'redux-form';
 import * as actions from '../../services/objectives/objectives-actions';
+import * as empActions from '../../services/employees/employees-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
+import AutoCompleteAsync from '../utils/autocomplete-async';
 
 injectTapEventPlugin();
 
@@ -54,12 +56,21 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
 );
 
 class CreateObjectives extends Component {
+  constructor(props) {
+    super(props);
+    this.handleOwnerChange = this.handleOwnerChange.bind(this);
+  }
+
   onSubmit = (data) => {
     this.props.actions.saveNewObjective(data);
   }
 
   handleKeyResultsSubmit = ({keyresult}) => {
     this.props.actions.saveNewKeyResult(this.props.currentObjective._id, keyresult);
+  }
+
+  handleOwnerChange(value) {
+    console.log(value);
   }
 
 	render() {
@@ -108,6 +119,33 @@ class CreateObjectives extends Component {
                     <RaisedButton label="Save" type="submit"/>
                   </Col>
                 </Row>
+
+                <Row>
+                  <Col md={4}>
+                    <Field name="owner"
+                        component={AutoCompleteAsync}
+                        placeholder="Owner"
+                        resultsValueKey="_id"
+                        resultsLabelKey="name"
+                        callback={this.props.empActions.findEmployeesByName}
+                        callbackUrl="http://localhost:3001/employees/find/"
+                        results={this.props.employee_results}
+                    />
+                  </Col>
+
+                  <Col md={4}>
+                    <Field name="category"
+                        component={AutoCompleteAsync}
+                        placeholder="Category"
+                        resultsValueKey="_id"
+                        resultsLabelKey="name"
+                        callback={this.props.empActions.findEmployeesByName}
+                        callbackUrl="http://localhost:3001/employees/find/"
+                        results={this.props.employee_results}
+                    />
+                  </Col>
+                </Row>
+
               </form>
             </Grid>
           )}
@@ -133,7 +171,8 @@ export const mapStateToProps = ( state ) => {
 }
 
 export const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(actions, dispatch)
+  actions: bindActionCreators(actions, dispatch),
+  empActions: bindActionCreators(empActions, dispatch),
 });
 
 export default connect (mapStateToProps, mapDispatchToProps) (CreateObjectives);
