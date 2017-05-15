@@ -1,16 +1,17 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import TextField from 'material-ui/TextField'
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import RaisedButton from 'material-ui/RaisedButton';
 import * as empActions from '../../services/employees/employees-actions';
+import * as actions from '../../services/objectives/objectives-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import AutoCompleteAsync from '../utils/autocomplete-async';
+import {renderTextField, renderSelectAsync, renderSelectField} from '../utils/form-utils';
 
 const validate = values => {
   const errors = {}
-  const requiredFields = [ 'keyresult', 'owner' ]
+  const requiredFields = [ 'keyresult', 'owner', 'quarter', 'target', 'units' ]
   requiredFields.forEach(field => {
     console.log('Values: ', values);
     if (!values[ field ]) {
@@ -26,28 +27,30 @@ const validate = values => {
   return errors
 }
 //
-const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-  <TextField hintText={label}
-    floatingLabelText={label}
-    errorText={touched && error}
-    fullWidth={true}
-    {...input}
-    {...custom}
-  />
-)
-
-// value={{val: props.value}}
-// onChange={param => props.onChange(param.val)}
+// const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
+//   <TextField hintText={label}
+//     floatingLabelText={label}
+//     errorText={touched && error}
+//     fullWidth={true}
+//     {...input}
+//     {...custom}
+//   />
+// )
 
 const logChange = () => {
   console.log('field value');
 }
 
 let KeyResultForm = props => {
-  const { handleSubmit, pristine, reset, submitting } = props
+  const { objective, handleSubmit, pristine, reset, submitting } = props
+
+  const onSubmit = (data) => {
+    props.actions.saveNewKeyResult(objective._id, data);
+  }
+
 	return(
     <Grid>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col md={8}>
               <Field name="keyresult" component={renderTextField} label="Key Result"/>
@@ -65,20 +68,21 @@ let KeyResultForm = props => {
                 resultsValueKey="_id"
                 resultsLabelKey="name"
                 callback={props.empActions.findEmployeesByName}
-                callbackUrl="http://localhost:3001/employees/find/"
+                callbackUrl="http://localhost:3001/employees/filter?name="
                 results={props.employee_results}
             />  
           </Col>
           <Col md={4}>
-            <Field name="tags"
-                component={AutoCompleteAsync}
-                placeholder="Tags"
-                multi = {true}
-                resultsValueKey="_id"
-                resultsLabelKey="name"
-                callback={props.empActions.findEmployeesByName}
-                callbackUrl="http://localhost:3001/employees/find/"
-                results={props.employee_results}
+            <Field name="quarter"
+                component={renderSelectField}
+                placeholder="Quarter"
+                options={
+                  [
+                    {label: 'Q1', value: 'Q1'},
+                    {label: 'Q2', value: 'Q2'},
+                    {label: 'Q3', value: 'Q3'},
+                    {label: 'Q4', value: 'Q4'}
+                  ]}
             />
           </Col>
         </Row>
@@ -91,13 +95,12 @@ let KeyResultForm = props => {
         <Row>
           <Col md={4}>
             <Field name="units"
-                component={AutoCompleteAsync}
-                placeholder="Units"
+                component={renderSelectAsync}
+                placeholder="Select Unit"
+                creatable={true}
                 resultsValueKey="_id"
-                resultsLabelKey="name"
-                callback={props.empActions.findEmployeesByName}
-                callbackUrl="http://localhost:3001/employees/find/"
-                results={props.employee_results}
+                resultsLabelKey="value"
+                callbackUrl="http://localhost:3001/config?domain=units&value="
             />
           </Col>
         </Row>
@@ -123,7 +126,8 @@ export const mapStateToProps = ( state ) => {
 }
 
 export const mapDispatchToProps = (dispatch) => ({
-  empActions: bindActionCreators(empActions, dispatch),  
+  actions: bindActionCreators(actions, dispatch),
+  empActions: bindActionCreators(empActions, dispatch)
 });
 
 export default connect (mapStateToProps, mapDispatchToProps) (KeyResultForm);

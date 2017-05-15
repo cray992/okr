@@ -1,6 +1,6 @@
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
 Objective = mongoose.model('Objective');
-//Stock = mongoose.model('Stocks');
+Config = mongoose.model('Config');
 
 exports.findAll = function(req, res){
   Objective.find({},function(err, results) {
@@ -8,8 +8,51 @@ exports.findAll = function(req, res){
   });
 };
 
+exports.findByName = function(req, res) {
+  const q = req.query;
+  let qString = '';
+  if (q.name) {
+    qString = {'name': {'$regex': q.name, $options: 'i'}};
+  }
+
+  if (q.eid) {
+    qString = {'owner.eid': q.eid};
+  }
+
+  console.log(qString);
+
+  Objective.find(qString,function(err, result) {
+    return res.send(result);
+  });
+};
+
+exports.findKeyResultsByEmp = function(req, res) {
+  const q = req.query;
+  let qString = '';
+
+  if (q.eid) {
+    qString = {'keyresults.owner.eid': q.eid};
+  }
+
+  const callback = function(err, result) {
+    return res.send(result);
+  }
+
+  Objective.aggregate(
+    { $project : {
+        _id : 1,
+        name : 1,
+        owner: 1,
+        keyresults : 1
+    }},
+    { $unwind : "$keyresults" },
+    { $match: {'keyresults.owner.eid': q.eid}}
+  ).exec(callback);
+
+};
+
 exports.findById = function(req, res){
-  var id = req.params.id;
+  const id = req.params.id;
   Objective.findOne({'_id':id},function(err, result) {
     return res.send(result);
   });
@@ -22,9 +65,17 @@ exports.add = function(req, res) {
   });
 }
 
+exports.findByTagName = function(req, res){
+  const str = req.params.str;
+  Objective.find({'tags': [{'name': {'$regex': str, $options: 'i'}}] },function(err, result) {
+    console.log(str, result);
+    return res.send(result);
+  });
+};
+
 exports.update = function(req, res) {
-  var id = req.params.id;
-  var updates = req.body;
+  const id = req.params.id;
+  const updates = req.body;
 
   Objective.update({"_id":id}, req.body,
     function (err, numberAffected) {
@@ -35,7 +86,17 @@ exports.update = function(req, res) {
 }
 
 exports.addKeyResult = function (req, res) {
-  var id = req.params.id;
+  const id = req.params.id;
+  const unit = req.body.units;
+
+  if (unit) {
+    const query = {domain: 'units', value: unit.value};
+    Config.findOneAndUpdate(query, query, {upsert:true}, function(err, doc){
+      if (err) console.error(err);
+      console.log(doc);
+    });
+  }
+
   Objective.update({"_id":id}, 
     {$push: {keyresults: req.body}},
     function (err, numberAffected) {
@@ -45,7 +106,7 @@ exports.addKeyResult = function (req, res) {
   });
 }
 exports.delete = function(req, res){
-  var id = req.params.id;
+  const id = req.params.id;
   Objective.remove({'_id':id},function(result) {
     return res.send(result);
   });

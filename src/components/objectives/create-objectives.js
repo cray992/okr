@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import TextField from 'material-ui/TextField';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as Colors from 'material-ui/styles/colors';
@@ -13,7 +12,7 @@ import * as actions from '../../services/objectives/objectives-actions';
 import * as empActions from '../../services/employees/employees-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
-import AutoCompleteAsync from '../utils/autocomplete-async';
+import {renderTextField, renderSelectAsync, renderSelectField} from '../utils/form-utils';
 
 injectTapEventPlugin();
 
@@ -37,7 +36,7 @@ const muiTheme = getMuiTheme({
 
 const validate = values => {
   const errors = {}
-  const requiredFields = [ 'objective' ]
+  const requiredFields = [ 'objective', 'owner', 'category', 'quarter' ]
   requiredFields.forEach(field => {
     if (!values[ field ]) {
       errors[ field ] = 'Required'
@@ -46,20 +45,7 @@ const validate = values => {
   return errors;
 }
 
-const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-  <TextField hintText={label}
-    errorText={touched && error}
-    fullWidth={true}
-    {...input}
-    {...custom}
-  />
-);
-
 class CreateObjectives extends Component {
-  constructor(props) {
-    super(props);
-    this.handleOwnerChange = this.handleOwnerChange.bind(this);
-  }
 
   onSubmit = (data) => {
     this.props.actions.saveNewObjective(data);
@@ -67,10 +53,6 @@ class CreateObjectives extends Component {
 
   handleKeyResultsSubmit = ({keyresult}) => {
     this.props.actions.saveNewKeyResult(this.props.currentObjective._id, keyresult);
-  }
-
-  handleOwnerChange(value) {
-    console.log(value);
   }
 
 	render() {
@@ -95,7 +77,7 @@ class CreateObjectives extends Component {
 
               <Row>
                 <Col md={12}>
-                  <KeyResultForm onSubmit={this.handleKeyResultsSubmit}/>
+                  <KeyResultForm objective={currentObjective} onSubmit={this.handleKeyResultsSubmit}/>
                 </Col>
               </Row>
 
@@ -119,30 +101,67 @@ class CreateObjectives extends Component {
                     <RaisedButton label="Save" type="submit"/>
                   </Col>
                 </Row>
+                
+                <Row>
+                  <Col md={8}>
+                    <Field name="description" component={renderTextField} multiLine={true} label="Description"/>
+                  </Col>
+                </Row>
 
                 <Row>
                   <Col md={4}>
                     <Field name="owner"
-                        component={AutoCompleteAsync}
+                        component={renderSelectAsync}
                         placeholder="Owner"
                         resultsValueKey="_id"
                         resultsLabelKey="name"
                         callback={this.props.empActions.findEmployeesByName}
-                        callbackUrl="http://localhost:3001/employees/find/"
+                        callbackUrl="http://localhost:3001/employees/filter?name="
                         results={this.props.employee_results}
                     />
                   </Col>
 
                   <Col md={4}>
                     <Field name="category"
-                        component={AutoCompleteAsync}
+                        component={renderSelectField}
                         placeholder="Category"
+                        options={
+                          [
+                            {label: 'Grow', value: 'Grow'},
+                            {label: 'Innovate', value: 'Innovate'},
+                            {label: 'Operate', value: 'Operate'},
+                            {label: 'Inspire', value: 'Inspire'}
+                          ]}
+                    />
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col md={4}>
+                    <Field name="parent"
+                        component={renderSelectAsync}
+                        placeholder="Align with another Objective"
                         resultsValueKey="_id"
                         resultsLabelKey="name"
-                        callback={this.props.empActions.findEmployeesByName}
-                        callbackUrl="http://localhost:3001/employees/find/"
-                        results={this.props.employee_results}
+                        callback={this.props.actions.findObjectivesByName}
+                        callbackUrl="http://localhost:3001/objectives/filter?name="
+                        results={this.props.objective_results}
                     />
+                  </Col>
+
+                  <Col md={4}>
+                    <Field name="tags"
+                        component={renderSelectAsync}
+                        placeholder="Tags"
+                        creatable={true}
+                        multi={true}
+                    />
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col md={4}>
+                    <Field name="contingency" component={renderTextField} multiLine={true} label="Dependencies / Contingency"/>
                   </Col>
                 </Row>
 
@@ -164,7 +183,8 @@ CreateObjectives = reduxForm({
 // Redux hook functions to connect and fetch data from the store
 export const mapStateToProps = ( state ) => {
   return (
-    { currentObjective: state.objectives.currentObjective,
+    { 
+      currentObjective: state.objectives.currentObjective,
       currentKeyResults: state.objectives.currentKeyResults
      }
   )

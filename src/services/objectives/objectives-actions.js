@@ -1,8 +1,9 @@
+
 import {reset} from 'redux-form';
 
 export function getObjectivesCompleted (data) {
 	return  {
-		type: "GET_OBJECTIVES",
+		type: "GET_OBJECTIVES_COMPLETED",
 		payload: data
 	}
 }
@@ -14,6 +15,43 @@ export function saveObjectiveCompleted (data) {
 	}
 }
 
+export function getKeyresultsCompleted (data) {
+	return  {
+		type: "GET_KEY_RESULTS_COMPLETED",
+		payload: data
+	}
+}
+
+export function findObjectivesByName(data) {
+	return (dispatch) => {
+		return fetch('http://localhost:3001/objectives/filter?name='+data, {
+			method: "GET"
+		})
+		.then((res) => res.json())
+		.then((data) => dispatch(getObjectivesCompleted(data)))
+	}
+}
+
+export function fetchCurrentEmployeeObjectives(eid) {
+	return (dispatch) => {
+		return fetch('http://localhost:3001/objectives/filter?eid='+eid, {
+			method: "GET"
+		})
+		.then((res) => res.json())
+		.then((data) => dispatch(getObjectivesCompleted(data)))
+	}
+}
+
+export function fetchCurrentEmployeeKeyResults(eid) {
+	return (dispatch) => {
+		return fetch('http://localhost:3001/keyresults/filter?eid='+eid, {
+			method: "GET"
+		})
+		.then((res) => res.json())
+		.then((data) => dispatch(getKeyresultsCompleted(data)))
+	}
+}
+
 export function saveKeyResultsCompleted (data) {
 	return  {
 		type: "SAVE_KEY_RESULT_RETURNED",
@@ -22,6 +60,15 @@ export function saveKeyResultsCompleted (data) {
 }
 
 export function saveNewObjective(data) {
+	let tags = [];
+	let pobjective = {};
+	const description = data.description || '';
+	if (data.tags) {
+		tags = data.tags.map((x) => ({tid: '123', name: x.value}));
+	}
+	if (data.parent) {
+		pobjective = {oid: data.parent._id};
+	}
 	return (dispatch) => {
 		return fetch('http://localhost:3001/objectives', {
 			method: "POST",
@@ -29,7 +76,15 @@ export function saveNewObjective(data) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({name: data.objective})
+      body: JSON.stringify({
+      	name: data.objective,
+      	description: description,
+      	pobjective: pobjective,
+			  owner: {eid: data.owner._id, name: data.owner.name},
+			  category: data.category,
+			  contingency: data.contingency,
+			  tags: tags
+      })
 		})
 		.then((res) => res.json())
 		.then((data) => dispatch(saveObjectiveCompleted(data)))
@@ -45,7 +100,13 @@ export function saveNewKeyResult(objectiveId, data) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({name: data})
+      body: JSON.stringify({
+      	name: data.keyresult,
+      	owner: {eid: data.owner._id, name: data.owner.name},
+      	quarter: data.quarter,
+      	target: data.target,
+      	units: {uid: data.units._id, value: data.units.value}
+      })
 		})
 		.then(() => dispatch(reset('keyresultform')))
 		.then(() => dispatch(saveKeyResultsCompleted(data)))

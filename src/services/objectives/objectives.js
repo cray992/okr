@@ -17,8 +17,10 @@ export default ( state = initialObjectives, { type, payload } ) => {
           ); 
 
       return newState;
-  	case "GET_OBJECTIVES":
-  		return [...payload];
+    case "GET_OBJECTIVES_COMPLETED":
+      return {objective_results: payload};
+    case "GET_KEY_RESULTS_COMPLETED":
+      return {...state, keyresults_fetch_results: payload};
   	default: 
   		return state;
   }

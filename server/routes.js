@@ -1,7 +1,10 @@
 const routes = function(app){
 	var objectives = require('./controllers/objectives');
 	var employees = require('./controllers/employees');
+	var config = require('./controllers/config');
 
+
+	app.get('/objectives/filter', objectives.findByName);
 	app.get('/objectives', objectives.findAll);
 	app.get('/objectives/:id', objectives.findById);
 	app.post('/objectives', objectives.add);
@@ -11,9 +14,12 @@ const routes = function(app){
 
 	app.post('/objectives/:id/keyresults', objectives.addKeyResult);
 
-	app.get('/employees/find/:str', employees.findByName);
+	app.get('/keyresults/filter', objectives.findKeyResultsByEmp);
+
+	app.get('/employees/filter', employees.findByName);
 	app.get('/employees/import', employees.import);
 
+	app.get('/config', config.findByName);
 }
 
 module.exports = routes;

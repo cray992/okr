@@ -22,9 +22,9 @@ const KeyResultItem = (props) => {
 	return (
 		<div>
         <ListItem
-          primaryText={props.keyResult}
+          primaryText={props.keyResult.keyresult}
 		      leftAvatar={
-		        <Avatar src="person-avatar.png" />
+		        <Avatar src="/person-avatar.png" />
 		      }
         />
         <Divider inset={false} />

@@ -3,7 +3,13 @@ Schema = mongoose.Schema;
 
 var ObjectiveSchema = new Schema({
   name: String,
-  keyresults: [{name: String}]
+  description: String,
+  owner: {eid: String, name: String},
+  category: String,
+  contingency: String,
+  tags: [{tid: String, name: String}],
+  pobjective: {oid: String},
+  keyresults: [{name: String, owner: {eid: String, name: String}, quarter: String, target: Number, units: {uid: String, value: String}}]
 });
 
 ObjectiveSchema.pre('save', function(next) {

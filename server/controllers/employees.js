@@ -15,7 +15,7 @@ exports.findById = function(req, res){
 };
 
 exports.findByName = function(req, res){
-  var str = req.params.str;
+  var str = req.query.name;
   Employee.find({'name': {'$regex': str, $options: 'i'} },function(err, result) {
     console.log(str, result);
     return res.send(result);
