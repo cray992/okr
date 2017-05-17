@@ -8,6 +8,39 @@ exports.findAll = function(req, res){
   });
 };
 
+exports.getObjectivesProgress = function(req, res) {
+  const q = req.query;
+  const callback = function(err, result) {
+    console.log(err);
+    return res.send(result);
+  }
+
+  Objective.aggregate([
+    {$match: {
+      'owner.eid': q.eid
+    }},
+    { $unwind : "$keyresults" },
+    {$group: { 
+      _id: "$_id",
+      "name": { "$first": "$name" },
+      pcent: { 
+        $avg: {
+          $divide: [
+            "$keyresults.actual", "$keyresults.target"
+          ]
+        }
+      }
+    }},
+    {$project: {
+      _id: 1,
+      name : 1,
+      pcent: 1
+    }} 
+  ])
+  .exec(callback);
+};
+
+
 exports.checkinKeyResults = function (req, res) {
   const keyScores = req.body.actual;
   keyScores.forEach( (x) => {

@@ -21,6 +21,8 @@ export default ( state = initialObjectives, { type, payload } ) => {
       return {objective_results: payload};
     case "GET_KEY_RESULTS_COMPLETED":
       return {...state, keyresults_fetch_results: payload};
+    case "GET_OBJ_PROGRESS_COMPLETED":
+      return {...state, objective_progress_results: payload};
   	default: 
   		return state;
   }

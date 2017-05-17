@@ -37,6 +37,10 @@ const navToolbar = (
     <Toolbar style={styles.toolbar}>
       <ToolbarGroup>
         <ToolbarSeparator />
+        <IconButton tooltip="Dashboard" href="/dashboard">
+          <FontIcon className="material-icons">assessment</FontIcon>
+        </IconButton>
+
         <IconButton tooltip="My Objectives" href="/my-objectives">
           <FontIcon className="material-icons">account_circle</FontIcon>
         </IconButton>
@@ -46,7 +50,7 @@ const navToolbar = (
         </IconButton>
 
         <IconButton tooltip="Checkin">
-          <FontIcon className="material-icons">location_on</FontIcon>
+          <FontIcon className="material-icons">filter_tilt_shift</FontIcon>
         </IconButton>
 
         <IconButton tooltip="Discuss">

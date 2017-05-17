@@ -36,17 +36,24 @@ const styles = {
 
 const MyObjectivesList = (props) => {
   const objectives = props.objectives;
+  console.log(props);
 	return(
 		<MuiThemeProvider muiTheme={muiTheme}>
 				<div>
 			    <Subheader style={styles.subheader}>My Obectives</Subheader>
 		    <List>
 			  	{
-						objectives.map ( (item, key) => {
-							return (
-								<MyObjectivesListItem key={key} objective={item.objective} progress={item.progress} />
+			  		(objectives ? 
+			  			(
+								objectives.map ( (item, key) => {
+									return (
+										<MyObjectivesListItem key={item._id} objective={item.name} progress={item.progress} />
+									)
+								})
+							): (
+								<div> No objectives found! </div> 
 							)
-						})
+						)
 			  	}
 		    </List>
 			</div>

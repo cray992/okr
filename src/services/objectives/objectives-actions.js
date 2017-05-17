@@ -22,6 +22,23 @@ export function getKeyresultsCompleted (data) {
 	}
 }
 
+export function getObjectivesProgressCompleted (data) {
+	return  {
+		type: "GET_OBJ_PROGRESS_COMPLETED",
+		payload: data
+	}
+}
+
+export function getObjectivesProgressByEmp(data) {
+	return (dispatch) => {
+		return fetch('http://localhost:3001/empobjprogress?eid='+data, {
+			method: "GET"
+		})
+		.then((res) => res.json())
+		.then((data) => dispatch(getObjectivesProgressCompleted(data)))
+	}
+}
+
 export function findObjectivesByName(data) {
 	return (dispatch) => {
 		return fetch('http://localhost:3001/objectives/filter?name='+data, {
