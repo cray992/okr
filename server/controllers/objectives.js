@@ -8,6 +8,23 @@ exports.findAll = function(req, res){
   });
 };
 
+exports.checkinKeyResults = function (req, res) {
+  const keyScores = req.body.actual;
+  keyScores.forEach( (x) => {
+    const id = x.id; //mongoose.Types.ObjectId(x.id);
+    console.log('>>>>>>>>>>>>>>>>>>>>>>',id, x.actual);  
+    Objective.update(
+      {'keyresults._id': id}, 
+      {$set: {'keyresults.$.actual': x.actual}},
+      {upsert: true},
+      function (err, numberAffected) {
+        if (err) return console.log(err);
+        console.log('Updated %d Objectives', numberAffected);
+      });
+  });
+  res.sendStatus(202);
+}
+
 exports.findByName = function(req, res) {
   const q = req.query;
   let qString = '';

@@ -10,6 +10,7 @@ export default (
   <Route component={App}>
     <Route path="/" component={CheckinHome} />
     <Route path="/my-objectives" component={MyObjectives} />
+    <Route path="/checkin" component={CheckinHome} />
     <Route path="/objectives/create" component={CreateObjective} />
     <Route path="*" component={PageNotFound} />
   </Route>

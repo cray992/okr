@@ -6,6 +6,10 @@ import { Field, FieldArray, reduxForm } from 'redux-form';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {darkBlack, White} from 'material-ui/styles/colors';
+import RaisedButton from 'material-ui/RaisedButton';
+import * as actions from '../../services/objectives/objectives-actions';
+import { connect } from 'react-redux';
+import {bindActionCreators} from 'redux';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -13,57 +17,71 @@ const muiTheme = getMuiTheme({
     primary1Color: "#F3294D",
     primary2Color: "#F3294D",
     accent1Color: "#010144",
-    pickerHeaderColor: 'Black',
-    alternateTextColor: darkBlack
+    pickerHeaderColor: '#010144',
+    alternateTextColor: White
   }
 });
 
 let Checkin = (props) => {
 		const keyresults = props.my_keyresults;
-		console.log(keyresults);
+
+	  const onSubmit = (data) => {
+	    props.actions.checkin(data);
+	  }
+
+	  const { handleSubmit, pristine, reset, submitting } = props;
 		return (
 	    <MuiThemeProvider muiTheme={muiTheme}>
 				<Grid fluid>
-				{
-					(keyresults ? 
-						(keyresults.map ( (x) => {
-							return (
-								<Row>
-									<Col md={12}>
-										<CheckinObjectivesFormItem key={x.keyresults._id} keyresult={x}/>
-									</Col>
-								</Row>
-							);
-						}))
-						:
-						( <div>No key results found for you.</div> )
-					)
-				}
-			</Grid>
-		</MuiThemeProvider>
-	)
-}
-
-
-const CheckinObjectivesFormItem = (props) => {
-	const x = props.keyresult;
-	return (
-    <form>
-			<Row>
-				<Col md={12}>
 					<Row>
-						<Col md={8}>
-							{x.keyresults.quarter} - {x.keyresults.name}	
-						</Col>
-						<Col md={4}>
-	            <Field name="actual" component={renderTextField}/>
-	            <br/>
-							Target: {x.keyresults.target}	{x.keyresults.units.value}
+						<Col md={12}>
+							<form onSubmit={handleSubmit(onSubmit)}>
+                <RaisedButton label="Save" type="submit"/>
+								<FieldArray name="keyresults" component={CheckinObjectivesFormItems} list={keyresults}/>
+							</form>
 						</Col>
 					</Row>
-				</Col>
-			</Row>
-		</form>
+				</Grid>
+			</MuiThemeProvider>
+		)
+}
+
+const CheckinObjectivesFormItems = (props) => {
+	const keyresults = props.list;
+	const { fields, meta: { touched, error, submitFailed } } = props;
+	const style = {
+	  message: {
+	    position: "relative",
+	    bottom: "2px",
+	    fontSize: "12px",
+	    lineHeight: '12px',
+	    color: '#F3294D'
+	  }
+	}
+	// keyresults.map ( (x) => { fields.push({kr: x}) });
+
+  {(touched || submitFailed) && error && <span>{error}</span>}
+	console.log(keyresults);
+	return (
+		<Row>
+			<Col md={12}>
+				{
+					keyresults.map ( (x) => {
+						console.log(x.keyresults.actual);
+						return (
+							<Row key={x.keyresults._id}>
+								<Col md={12}>
+									<span>{x.keyresults.quarter} - {x.keyresults.name}</span>
+			            <Field name={x.keyresults._id} placeholder="Enter actual value" value={x.keyresults.actual} component={renderTextField}/>
+									<span style={style.message}>Target: {x.keyresults.target}	{x.keyresults.units.value}</span>
+									<br/><br/><br/>
+								</Col>
+							</Row>
+						);
+					})
+				}
+			</Col>
+		</Row>
 	)
 }
 
@@ -72,4 +90,11 @@ Checkin = reduxForm({
   form: 'checkin'
 })(Checkin);
 
-export default Checkin;
+// Redux hook functions to connect and fetch data from the store
+export const mapStateToProps = ( state ) => ({})
+
+export const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(actions, dispatch)
+});
+
+export default connect (mapStateToProps, mapDispatchToProps) (Checkin);

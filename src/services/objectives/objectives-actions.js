@@ -59,6 +59,23 @@ export function saveKeyResultsCompleted (data) {
 	}
 }
 
+export function checkin(data) {
+	let dArr = [];
+	for (let [k, v] of Object.entries(data)) {
+		dArr.push({'id': k, 'actual': v});
+	}
+	return (dispatch) => {
+		return fetch('http://localhost:3001/keyresults/checkin', {
+			method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({'actual': dArr})
+		})
+	}
+}
+
 export function saveNewObjective(data) {
 	let tags = [];
 	let pobjective = {};
@@ -105,6 +122,7 @@ export function saveNewKeyResult(objectiveId, data) {
       	owner: {eid: data.owner._id, name: data.owner.name},
       	quarter: data.quarter,
       	target: data.target,
+      	actual: 0,
       	units: {uid: data.units._id, value: data.units.value}
       })
 		})

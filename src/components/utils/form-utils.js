@@ -37,7 +37,7 @@ export const renderTextField = ({ input, label, meta: { touched, error }, ...cus
     {...input}
     {...custom}
   />
-);
+)
 
 export const renderSelectField = (props) => {
   return (

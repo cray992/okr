@@ -13,8 +13,11 @@ const routes = function(app){
 	app.get('/objectives/import', objectives.import);
 
 	app.post('/objectives/:id/keyresults', objectives.addKeyResult);
+	app.post('/keyresults/checkin', objectives.checkinKeyResults);
 
 	app.get('/keyresults/filter', objectives.findKeyResultsByEmp);
+
+	app.get('/objectives/empobjectives', objectives.s);
 
 	app.get('/employees/filter', employees.findByName);
 	app.get('/employees/import', employees.import);

@@ -19,7 +19,7 @@ const muiTheme = getMuiTheme({
     primary2Color: "#F3294D",
     accent1Color: "#010144",
     pickerHeaderColor: '#F3294D',
-    alternateTextColor: darkBlack
+    alternateTextColor: White
   }
 });
 
@@ -43,7 +43,7 @@ class CheckinHome extends Component {
 	}
 
 	render () {
-    const actions = [
+    const actionButtons = [
       <FlatButton
         label="Cancel"
         primary={true}
@@ -63,16 +63,16 @@ class CheckinHome extends Component {
 	        <RaisedButton label="Checkin" onTouchTap={this.handleOpen} />
 	        <Dialog
 	          title="Checkin My Key Results"
-	          actions={actions}
+	          actions={actionButtons}
 	          modal={false}
 	          open={this.state.open}
 	          onRequestClose={this.handleClose}
 	          autoScrollBodyContent={true}
 	        >
-	        	<div>
-		        	<br/>
-							<Checkin my_keyresults={this.props.keyresults_fetch_results}/>
-						</div>
+        	<div>
+	        	<br/>
+						<Checkin my_keyresults={this.props.keyresults_fetch_results}/>
+					</div>
 	        </Dialog>
 	      </div>
 	    </MuiThemeProvider>
