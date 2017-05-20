@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import AppBar from 'material-ui/AppBar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -11,6 +11,9 @@ import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-mo
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import CheckinHome from '../../objectives/checkin-home';
+import * as actions from '../../../services/objectives/objectives-actions';
+import { connect } from 'react-redux';
+import {bindActionCreators} from 'redux';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -33,57 +36,85 @@ const styles = {
   }
 }
 
-const navToolbar = (
-    <Toolbar style={styles.toolbar}>
-      <ToolbarGroup>
-        <ToolbarSeparator />
-        <IconButton tooltip="Dashboard" href="/dashboard">
-          <FontIcon className="material-icons">assessment</FontIcon>
-        </IconButton>
+class Nav extends Component {  
+  constructor(props) {
+    super(props);
+    this.openCheckin = this.openCheckin.bind(this); 
+  }
 
-        <IconButton tooltip="My Objectives" href="/my-objectives">
-          <FontIcon className="material-icons">account_circle</FontIcon>
-        </IconButton>
+  openCheckin() {
+    this.props.actions.checkinClicked();
+  }
 
-        <IconButton tooltip="Create new OKR" href="/objectives/create">
-          <FontIcon className="material-icons">add</FontIcon>
-        </IconButton>
-
-        <IconButton tooltip="Checkin">
-          <FontIcon className="material-icons">filter_tilt_shift</FontIcon>
-        </IconButton>
-
-        <IconButton tooltip="Discuss">
-          <FontIcon className="material-icons">forum</FontIcon>
-        </IconButton>
-
-        <ToolbarSeparator />
-        
-        <IconMenu
-          iconButtonElement={
-            <IconButton touch={true}>
-              <NavigationExpandMoreIcon />
+  render () {
+    const navToolbar = (
+        <Toolbar style={styles.toolbar}>
+          <ToolbarGroup>
+            <IconButton tooltip="Search OKRs" href="/dashboard">
+              <FontIcon className="material-icons">search</FontIcon>
             </IconButton>
-          }
-        >
-          <MenuItem primaryText="Logout" />
-          <MenuItem primaryText="More Info" />
-        </IconMenu>
-      </ToolbarGroup>
-    </Toolbar>
-  );
+            <ToolbarSeparator />
+            <IconButton tooltip="Dashboard" href="/dashboard">
+              <FontIcon className="material-icons">assessment</FontIcon>
+            </IconButton>
 
-const Nav = () => (
-	<div>
-    <MuiThemeProvider muiTheme={muiTheme}>
-  	  <AppBar
-        title="OKR Management"
-        href="/"
-        showMenuIconButton={false}
-        iconElementRight={navToolbar}
-  	  />
-  	</MuiThemeProvider>
-  </div>
-);
+            <IconButton tooltip="My Objectives" href="/my-objectives">
+              <FontIcon className="material-icons">account_circle</FontIcon>
+            </IconButton>
 
-export default Nav;
+            <IconButton tooltip="Create new OKR" href="/objectives/create">
+              <FontIcon className="material-icons">add</FontIcon>
+            </IconButton>
+
+            <IconButton tooltip="Checkin" onTouchTap={this.openCheckin}>
+              <FontIcon className="material-icons">filter_tilt_shift</FontIcon>
+            </IconButton>
+
+            <IconButton tooltip="Notifications">
+              <FontIcon className="material-icons">message</FontIcon>
+            </IconButton>
+
+            <ToolbarSeparator />
+            
+            <IconMenu
+              iconButtonElement={
+                <IconButton touch={true}>
+                  <NavigationExpandMoreIcon />
+                </IconButton>
+              }
+            >
+              <MenuItem primaryText="Logout" />
+              <MenuItem primaryText="More Info" />
+            </IconMenu>
+          </ToolbarGroup>
+        </Toolbar>
+      );
+
+    return (
+    	<div>
+        <MuiThemeProvider muiTheme={muiTheme}>
+      	  <AppBar
+            title="OKR Management"
+            href="/"
+            showMenuIconButton={false}
+            iconElementRight={navToolbar}
+      	  />
+      	</MuiThemeProvider>
+        <CheckinHome />
+      </div>
+    )
+  }
+}
+
+// Redux hook functions to connect and fetch data from the store
+export const mapStateToProps = ( state ) => {
+  return (
+    { }
+  )
+}
+
+export const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(actions, dispatch)
+});
+
+export default connect (mapStateToProps, mapDispatchToProps) (Nav);

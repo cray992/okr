@@ -11,9 +11,6 @@ const Dashboard = (props) => {
 					<Col md={6}>
 						<ObjectiveProgressChart />
 					</Col>
-					<Col md={6}>
-						<ObjectiveProgressChart />
-					</Col>
 				</Row>
 			</Grid>
 		</div>

@@ -6,10 +6,12 @@ import CreateObjective from './components/objectives/create-objectives';
 import MyObjectives from './components/objectives/my-objectives';
 import CheckinHome from './components/objectives/checkin-home';
 import Dashboard from './components/charts/dashboard';
+import OrgChart from './components/org/org-chart';
 
 export default (
   <Route component={App}>
     <Route path="/" component={Dashboard} />
+    <Route path="/org" component={OrgChart} />
     <Route path="/dashboard" component={Dashboard} />
     <Route path="/my-objectives" component={MyObjectives} />
     <Route path="/checkin" component={CheckinHome} />

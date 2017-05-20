@@ -3,13 +3,18 @@ import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'rec
 
 const ObjectiveProgressChart = () => {
 	const data = [
-    {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-    {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-    {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-    {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-    {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-    {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-    {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
+    {name: 'Jan', actual: 2, target: 10, amt: 2400},
+    {name: 'Feb', actual: 12, target: 18, amt: 2210},
+    {name: 'Mar', actual: 19, target: 24, amt: 2290},
+    {name: 'Apr', actual: 28, target: 32, amt: 2000},
+    {name: 'May', actual: 34, target: 45, amt: 2181},
+    {name: 'Jun', target: 52, amt: 2500},
+    {name: 'Jul', target: 65, amt: 2100},
+    {name: 'Aug',  target: 72, amt: 2100},
+    {name: 'Sep',  target: 81, amt: 2100},
+    {name: 'Oct',  target: 88, amt: 2100},
+    {name: 'Nov',  target: 93, amt: 2100},
+    {name: 'Dec',  target: 100, amt: 2100},
 	];
 	return (
     	<LineChart width={600} height={300} data={data}
@@ -19,8 +24,8 @@ const ObjectiveProgressChart = () => {
        <CartesianGrid strokeDasharray="3 3"/>
        <Tooltip/>
        <Legend />
-       <Line type="monotone" dataKey="pv" stroke="#F3294D" activeDot={{r: 8}}/>
-       <Line type="monotone" dataKey="uv" stroke="#010144" />
+       <Line type="monotone" dataKey="target" stroke="#F3294D" activeDot={{r: 8}}/>
+       <Line type="monotone" dataKey="actual" stroke="#010144" />
       </LineChart>
 	)
 }

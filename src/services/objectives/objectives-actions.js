@@ -29,6 +29,34 @@ export function getObjectivesProgressCompleted (data) {
 	}
 }
 
+export function onCheckinCancelClicked () {
+	return  {
+		type: "CHECKIN_DIALOG_CANCEL_REQUESTED",
+		payload: {}
+	}
+}
+
+export function onCheckinSubmitClicked () {
+	return  {
+		type: "CHECKIN_SUBMIT_REQUESTED",
+		payload: {}
+	}
+}
+
+export function onCheckinSubmitCompleted () {
+	return  {
+		type: "CHECKIN_SUBMIT_COMPLETED",
+		payload: {}
+	}
+}
+
+export function checkinClicked() {
+	return  {
+		type: "CHECKIN_DIALOG_OPEN_REQUESTED",
+		payload: {}
+	}	
+}
+
 export function getObjectivesProgressByEmp(data) {
 	return (dispatch) => {
 		return fetch('http://localhost:3001/empobjprogress?eid='+data, {
@@ -79,8 +107,10 @@ export function saveKeyResultsCompleted (data) {
 export function checkin(data) {
 	let dArr = [];
 	for (let [k, v] of Object.entries(data)) {
-		dArr.push({'id': k, 'actual': v});
+		dArr.push({id: k, actual: v});
 	}
+	const list = [...dArr];
+
 	return (dispatch) => {
 		return fetch('http://localhost:3001/keyresults/checkin', {
 			method: "POST",
@@ -88,8 +118,15 @@ export function checkin(data) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({'actual': dArr})
+      body: JSON.stringify({
+      	actual: list
+      })
 		})
+		.then(() => fetchCurrentEmployeeObjectives('5912036687a30c1a28d99142'))
+		.then(() => dispatch(onCheckinSubmitCompleted()))
+		.catch(function(error) {
+		  console.log('There has been a problem with your fetch operation: ' + error.message);
+		});
 	}
 }
 
@@ -126,7 +163,6 @@ export function saveNewObjective(data) {
 }
 
 export function saveNewKeyResult(objectiveId, data) {
-	console.log(objectiveId, data);
 	return (dispatch) => {
 		return fetch('http://localhost:3001/objectives/'+objectiveId+'/keyresults', {
 			method: "POST",

@@ -24,16 +24,9 @@ const muiTheme = getMuiTheme({
 });
 
 class CheckinHome extends Component {
-  state = {
-    open: false,
-  };
-
-  handleOpen = () => {
-    this.setState({open: true});
-  };
 
   handleClose = () => {
-    this.setState({open: false});
+    this.props.actions.onCheckinCancelClicked();
   };
 
 	constructor (props) {
@@ -47,25 +40,24 @@ class CheckinHome extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={this.props.actions.onCheckinCancelClicked}
       />,
       <FlatButton
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={this.props.actions.onCheckinSubmitClicked}
       />,
     ];
 
 		return(
 	    <MuiThemeProvider muiTheme={muiTheme}>
 	      <div>
-	        <RaisedButton label="Checkin" onTouchTap={this.handleOpen} />
 	        <Dialog
 	          title="Checkin My Key Results"
 	          actions={actionButtons}
 	          modal={false}
-	          open={this.state.open}
+	          open={this.props.checkin_open_flag}
 	          onRequestClose={this.handleClose}
 	          autoScrollBodyContent={true}
 	        >
@@ -83,7 +75,11 @@ class CheckinHome extends Component {
 // Redux hook functions to connect and fetch data from the store
 export const mapStateToProps = ( state ) => {
   return (
-  	{keyresults_fetch_results: state.objectives.keyresults_fetch_results}
+  	{
+      keyresults_fetch_results: state.objectives.keyresults_fetch_results,
+      checkin_open_flag: state.objectives.checkin_open_flag,
+      checkin_close_flag: state.objectives.checkin_close_flag
+    }
   )
 }
 

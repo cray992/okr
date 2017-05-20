@@ -30,14 +30,18 @@ export const renderTextAreaField = ({ input, label, type, meta: { touched, error
   </div>
 )
 
-export const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-  <TextField hintText={label}
-    errorText={touched && error}
-    fullWidth={true}
-    {...input}
-    {...custom}
-  />
-)
+export const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => {
+  // console.log('##########', input);
+  // const _input = {...input, value: xyz};
+  // console.log('>>>>>>>>>>>', _input);
+  return (
+    <TextField hintText={label}
+      errorText={touched && error}
+      fullWidth={true}
+      {...input}
+      {...custom}
+    />
+)}
 
 export const renderSelectField = (props) => {
   return (

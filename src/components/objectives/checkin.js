@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import Divider from 'material-ui/Divider';
-import {renderTextField, renderSelectAsync, renderSelectField} from '../utils/form-utils';
+import {renderTextField} from '../utils/form-utils';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -17,26 +16,35 @@ const muiTheme = getMuiTheme({
     primary1Color: "#F3294D",
     primary2Color: "#F3294D",
     accent1Color: "#010144",
-    pickerHeaderColor: '#010144',
+   // pickerHeaderColor: '#010144',   
     alternateTextColor: White
   }
 });
 
-let Checkin = (props) => {
-		const keyresults = props.my_keyresults;
+// Implementation overwritten in the constructor in order to get handle on the props object
+let onSubmit = (data) => { } 
 
-	  const onSubmit = (data) => {
-	    props.actions.checkin(data);
-	  }
+class Checkin extends Component {
+	constructor(props) {
+		super (props);
+  	onSubmit = (data) => {
+  		props.actions.checkin(data)
+  	}
+	}
 
-	  const { handleSubmit, pristine, reset, submitting } = props;
+  componentWillUpdate(props, state) {
+    if (props.checkin_submitted_flag) props.submit();
+  }
+
+  render() {
+		const keyresults = this.props.my_keyresults;
+	  const { handleSubmit, pristine, reset, submitting } = this.props;
 		return (
 	    <MuiThemeProvider muiTheme={muiTheme}>
 				<Grid fluid>
 					<Row>
 						<Col md={12}>
-							<form onSubmit={handleSubmit(onSubmit)}>
-                <RaisedButton label="Save" type="submit"/>
+							<form >
 								<FieldArray name="keyresults" component={CheckinObjectivesFormItems} list={keyresults}/>
 							</form>
 						</Col>
@@ -44,6 +52,7 @@ let Checkin = (props) => {
 				</Grid>
 			</MuiThemeProvider>
 		)
+	}
 }
 
 const CheckinObjectivesFormItems = (props) => {
@@ -61,18 +70,19 @@ const CheckinObjectivesFormItems = (props) => {
 	// keyresults.map ( (x) => { fields.push({kr: x}) });
 
   {(touched || submitFailed) && error && <span>{error}</span>}
-	console.log(keyresults);
 	return (
 		<Row>
 			<Col md={12}>
 				{
 					keyresults.map ( (x) => {
-						console.log(x.keyresults.actual);
+						const val = x.keyresults.actual +"";
 						return (
 							<Row key={x.keyresults._id}>
-								<Col md={12}>
+								<Col md={8}>
 									<span>{x.keyresults.quarter} - {x.keyresults.name}</span>
-			            <Field name={x.keyresults._id} placeholder="Enter actual value" value={x.keyresults.actual} component={renderTextField}/>
+								</Col>
+								<Col md={4}>
+			            <Field name={x.keyresults._id} placeholder="Enter actual value" value={val} component={renderTextField}/>
 									<span style={style.message}>Target: {x.keyresults.target}	{x.keyresults.units.value}</span>
 									<br/><br/><br/>
 								</Col>
@@ -91,9 +101,16 @@ Checkin = reduxForm({
 })(Checkin);
 
 // Redux hook functions to connect and fetch data from the store
-export const mapStateToProps = ( state ) => ({})
+export const mapStateToProps = ( state ) => {
+	return (
+		{
+		checkin_submitted_flag: state.objectives.checkin_submitted_flag,
+    onSubmit: onSubmit
+		}
+	)
+}
 
-export const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = (dispatch, ownProps) => ({
   actions: bindActionCreators(actions, dispatch)
 });
 

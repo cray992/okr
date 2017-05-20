@@ -139,13 +139,13 @@ class CreateObjectives extends Component {
                 <Row>
                   <Col md={4}>
                     <Field name="parent"
-                        component={renderSelectAsync}
-                        placeholder="Align with another Objective"
-                        resultsValueKey="_id"
-                        resultsLabelKey="name"
-                        callback={this.props.actions.findObjectivesByName}
-                        callbackUrl="http://localhost:3001/objectives/filter?name="
-                        results={this.props.objective_results}
+                      component={renderSelectAsync}
+                      placeholder="Align with another Objective"
+                      resultsValueKey="_id"
+                      resultsLabelKey="name"
+                      callback={this.props.actions.findObjectivesByName}
+                      callbackUrl="http://localhost:3001/objectives/filter?name="
+                      results={this.props.objective_results}
                     />
                   </Col>
 

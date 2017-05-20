@@ -43,9 +43,9 @@ exports.getObjectivesProgress = function(req, res) {
 
 exports.checkinKeyResults = function (req, res) {
   const keyScores = req.body.actual;
+  console.log('array length: ' + keyScores);
   keyScores.forEach( (x) => {
     const id = x.id; //mongoose.Types.ObjectId(x.id);
-    console.log('>>>>>>>>>>>>>>>>>>>>>>',id, x.actual);  
     Objective.update(
       {'keyresults._id': id}, 
       {$set: {'keyresults.$.actual': x.actual}},
