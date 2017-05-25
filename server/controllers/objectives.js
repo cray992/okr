@@ -10,6 +10,7 @@ exports.findAll = function(req, res){
 
 exports.getObjectivesProgress = function(req, res) {
   const q = req.query;
+console.log(q);
   const callback = function(err, result) {
     console.log(err);
     return res.send(result);
@@ -23,6 +24,7 @@ exports.getObjectivesProgress = function(req, res) {
     {$group: { 
       _id: "$_id",
       "name": { "$first": "$name" },
+      "krcount": { "$sum": 1 },
       pcent: { 
         $avg: {
           $divide: [
@@ -34,7 +36,8 @@ exports.getObjectivesProgress = function(req, res) {
     {$project: {
       _id: 1,
       name : 1,
-      pcent: 1
+      pcent: 1,
+      krcount: 1
     }} 
   ])
   .exec(callback);
@@ -147,14 +150,14 @@ exports.addKeyResult = function (req, res) {
     });
   }
 
-  Objective.update({"_id":id}, 
-    {$push: {keyresults: req.body}},
-    function (err, numberAffected) {
+  Objective.findOneAndUpdate({"_id":id}, 
+    {$push: {keyresults: req.body}}, {new: true},
+    function (err, updatedRec) {
       if (err) return console.log(err);
-      console.log('Updated %d Objectives', numberAffected);
-      res.sendStatus(202);
+      res.send(updatedRec);
   });
 }
+
 exports.delete = function(req, res){
   const id = req.params.id;
   Objective.remove({'_id':id},function(result) {

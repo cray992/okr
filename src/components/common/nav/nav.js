@@ -14,6 +14,8 @@ import CheckinHome from '../../objectives/checkin-home';
 import * as actions from '../../../services/objectives/objectives-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
+import Search from '../search/search';
+import AutoCompleteSearch from '../search/auto-complete-search';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -29,6 +31,17 @@ const muiTheme = getMuiTheme({
   }
 });
 
+const searchMuiTheme = getMuiTheme({
+  palette: {
+    textColor: Colors.darkBlack,
+    primary1Color: "#F3294D",
+    primary2Color: "#F3294D",
+    accent1Color: "#010144",
+    pickerHeaderColor: Colors.darkBlack,
+    alternateTextColor: Colors.darkBlack
+  }
+});
+
 const styles = {
   toolbar: {
     backgroundColor: "#F3294D",
@@ -40,6 +53,12 @@ class Nav extends Component {
   constructor(props) {
     super(props);
     this.openCheckin = this.openCheckin.bind(this); 
+    this.state = {searchBoxOn: false};
+    this.openSearch = this.openSearch.bind(this);
+  }
+
+  openSearch() {
+    this.setState({searchBoxOn: true});
   }
 
   openCheckin() {
@@ -50,7 +69,12 @@ class Nav extends Component {
     const navToolbar = (
         <Toolbar style={styles.toolbar}>
           <ToolbarGroup>
-            <IconButton tooltip="Search OKRs" href="/dashboard">
+            {this.state.searchBoxOn ? (
+            <MuiThemeProvider muiTheme={searchMuiTheme} >
+              <AutoCompleteSearch />
+            </MuiThemeProvider>
+            ) : null}
+            <IconButton tooltip="Dashboard" onTouchTap={this.openSearch}>
               <FontIcon className="material-icons">search</FontIcon>
             </IconButton>
             <ToolbarSeparator />
@@ -58,11 +82,11 @@ class Nav extends Component {
               <FontIcon className="material-icons">assessment</FontIcon>
             </IconButton>
 
-            <IconButton tooltip="My Objectives" href="/my-objectives">
+            <IconButton tooltip="My Objectives" href="/my-objectives/5912036687a30c1a28d99142">
               <FontIcon className="material-icons">account_circle</FontIcon>
             </IconButton>
 
-            <IconButton tooltip="Create new OKR" href="/objectives/create">
+            <IconButton tooltip="Create new OKR" href="/objective/create">
               <FontIcon className="material-icons">add</FontIcon>
             </IconButton>
 

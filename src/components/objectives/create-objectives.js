@@ -13,13 +13,13 @@ import * as empActions from '../../services/employees/employees-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {renderTextField, renderSelectAsync, renderSelectField} from '../utils/form-utils';
+import PageHeader from './page-header';
 
 injectTapEventPlugin();
 
 const style = {
 		margin: "10px",
 		padding: "10px",
-		width: "100%",
 	  textAlign: 'left',
 	  display: 'inline-block',
 };
@@ -66,109 +66,112 @@ class CreateObjectives extends Component {
 
 		return(
       <MuiThemeProvider muiTheme={muiTheme}>
-		    <div style={style} >
-          {currentObjective ? (
-            <Grid>
-              <Row>
-                <Col md={12}>
-                  <h3>Objective: {currentObjective.name}</h3>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col md={12}>
-                  <KeyResultForm objective={currentObjective} onSubmit={this.handleKeyResultsSubmit}/>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col md={8}>
-                  {this.props.currentKeyResults &&
-                    <KeyResultsList keyresults={this.props.currentKeyResults}/>
-                  }
-                </Col>
-              </Row>
-            </Grid>
-          ) : (
-            <Grid>
-              <form onSubmit={handleSubmit(this.onSubmit)}>
+        <div>
+          <PageHeader title="Create new Objective" />
+          <div style={style} >
+            {currentObjective ? (
+              <Grid>
                 <Row>
-                  <Col md={8}>
-                    <Field name="objective" component={renderTextField} label="Enter Objective"/>
-                  </Col>
-
-                  <Col md={4}>
-                    <RaisedButton label="Save" type="submit"/>
-                  </Col>
-                </Row>
-                
-                <Row>
-                  <Col md={8}>
-                    <Field name="description" component={renderTextField} multiLine={true} label="Description"/>
+                  <Col md={12}>
+                    <h3>Objective: {currentObjective.name}</h3>
                   </Col>
                 </Row>
 
                 <Row>
-                  <Col md={4}>
-                    <Field name="owner"
+                  <Col md={12}>
+                    <KeyResultForm objective={currentObjective} onSubmit={this.handleKeyResultsSubmit}/>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col md={8}>
+                    {this.props.currentKeyResults &&
+                      <KeyResultsList keyresults={this.props.currentKeyResults}/>
+                    }
+                  </Col>
+                </Row>
+              </Grid>
+            ) : (
+              <Grid>
+                <form onSubmit={handleSubmit(this.onSubmit)}>
+                  <Row>
+                    <Col md={8}>
+                      <Field name="objective" component={renderTextField} label="Enter Objective"/>
+                    </Col>
+
+                    <Col md={4}>
+                      <RaisedButton label="Save" type="submit"/>
+                    </Col>
+                  </Row>
+                  
+                  <Row>
+                    <Col md={8}>
+                      <Field name="description" component={renderTextField} multiLine={true} label="Description"/>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col md={4}>
+                      <Field name="owner"
+                          component={renderSelectAsync}
+                          placeholder="Owner"
+                          resultsValueKey="_id"
+                          resultsLabelKey="name"
+                          callback={this.props.empActions.findEmployeesByName}
+                          callbackUrl="http://localhost:3001/employees/filter?name="
+                          results={this.props.employee_results}
+                      />
+                    </Col>
+
+                    <Col md={4}>
+                      <Field name="category"
+                          component={renderSelectField}
+                          placeholder="Category"
+                          options={
+                            [
+                              {label: 'Grow', value: 'Grow'},
+                              {label: 'Innovate', value: 'Innovate'},
+                              {label: 'Operate', value: 'Operate'},
+                              {label: 'Inspire', value: 'Inspire'}
+                            ]}
+                      />
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col md={4}>
+                      <Field name="parent"
                         component={renderSelectAsync}
-                        placeholder="Owner"
+                        placeholder="Align with another Objective"
                         resultsValueKey="_id"
                         resultsLabelKey="name"
-                        callback={this.props.empActions.findEmployeesByName}
-                        callbackUrl="http://localhost:3001/employees/filter?name="
-                        results={this.props.employee_results}
-                    />
-                  </Col>
+                        callback={this.props.actions.findObjectivesByName}
+                        callbackUrl="http://localhost:3001/objectives/filter?name="
+                        results={this.props.objective_results}
+                      />
+                    </Col>
 
-                  <Col md={4}>
-                    <Field name="category"
-                        component={renderSelectField}
-                        placeholder="Category"
-                        options={
-                          [
-                            {label: 'Grow', value: 'Grow'},
-                            {label: 'Innovate', value: 'Innovate'},
-                            {label: 'Operate', value: 'Operate'},
-                            {label: 'Inspire', value: 'Inspire'}
-                          ]}
-                    />
-                  </Col>
-                </Row>
+                    <Col md={4}>
+                      <Field name="tags"
+                          component={renderSelectAsync}
+                          placeholder="Tags"
+                          creatable={true}
+                          multi={true}
+                      />
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col md={4}>
-                    <Field name="parent"
-                      component={renderSelectAsync}
-                      placeholder="Align with another Objective"
-                      resultsValueKey="_id"
-                      resultsLabelKey="name"
-                      callback={this.props.actions.findObjectivesByName}
-                      callbackUrl="http://localhost:3001/objectives/filter?name="
-                      results={this.props.objective_results}
-                    />
-                  </Col>
+                  <Row>
+                    <Col md={4}>
+                      <Field name="contingency" component={renderTextField} multiLine={true} label="Dependencies / Contingency"/>
+                    </Col>
+                  </Row>
 
-                  <Col md={4}>
-                    <Field name="tags"
-                        component={renderSelectAsync}
-                        placeholder="Tags"
-                        creatable={true}
-                        multi={true}
-                    />
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col md={4}>
-                    <Field name="contingency" component={renderTextField} multiLine={true} label="Dependencies / Contingency"/>
-                  </Col>
-                </Row>
-
-              </form>
-            </Grid>
-          )}
-				</div>
+                </form>
+              </Grid>
+            )}
+  				</div>
+        </div>
 			</MuiThemeProvider>
     );
 	}

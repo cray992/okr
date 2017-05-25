@@ -8,6 +8,13 @@ export function getObjectivesCompleted (data) {
 	}
 }
 
+export function getObjectiveCompleted (data) {
+	return  {
+		type: "GET_OBJECTIVE_COMPLETED",
+		payload: data
+	}
+}
+
 export function saveObjectiveCompleted (data) {
 	return  {
 		type: "SAVE_OBJECTIVE_RETURNED",
@@ -179,17 +186,18 @@ export function saveNewKeyResult(objectiveId, data) {
       	units: {uid: data.units._id, value: data.units.value}
       })
 		})
+		.then((res) => res.json())
+		.then((newData) => dispatch(saveKeyResultsCompleted(newData)))
 		.then(() => dispatch(reset('keyresultform')))
-		.then(() => dispatch(saveKeyResultsCompleted(data)))
 	}
 }
 
-export function getObjectives () {
+export function getObjectiveDetails (id) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/objectives', {
+		return fetch('http://localhost:3001/objectives/'+id, {
 			method: "GET"
 		})
 		.then((res) => res.json())
-		.then((data) => dispatch(getObjectivesCompleted(data)))
+		.then((data) => dispatch(getObjectiveCompleted(data)))
 	}
 }

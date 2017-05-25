@@ -14,9 +14,11 @@ export default ( state = initialState, { type, payload } ) => {
         state.currentKeyResults ?
           {...state, currentKeyResults: [...state.currentKeyResults, payload ] }
           : {...state, currentKeyResults: [ payload ] }
-          ); 
+        ); 
 
       return newState;
+    case "GET_OBJECTIVE_COMPLETED":
+      return {...state, currentObjective: payload};
     case "GET_OBJECTIVES_COMPLETED":
       return {objective_results: payload};
     case "GET_KEY_RESULTS_COMPLETED":

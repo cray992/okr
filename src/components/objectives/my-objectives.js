@@ -30,15 +30,14 @@ const styles = {
 class MyObjectives extends Component {
 	constructor (props) {
 		super(props);
-    props.actions.getObjectivesProgressByEmp('5912036687a30c1a28d99142');
-    console.log(props.objective_progress_results);
+    props.actions.getObjectivesProgressByEmp(props.params.id);
 	}
 
 	render () {
 		let objectives = [];
 		let empProgress = 0;
 		if (this.props.objective_progress_results) {
-			objectives = this.props.objective_progress_results.map (x => ({_id: x._id, name: x.name, progress: Math.round(x.pcent * 100)}) ) 
+			objectives = this.props.objective_progress_results.map (x => ({...x, progress: Math.round(x.pcent * 100)}) ) 
 			const sum = 0;
 			objectives.forEach( x => {sum += x.progress});
 			empProgress = Math.round(sum / objectives.length);

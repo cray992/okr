@@ -58,7 +58,7 @@ const MyObjectivesHeader = props => {
 							<Col md={4}>
 								<div className="view-org-link">
 			      					<MuiThemeProvider muiTheme={getMuiTheme()}>
-    									<FlatButton label="View Org" primary={true} />
+    									<FlatButton label="View Org" primary={true} href="/org"/>
 									</ MuiThemeProvider>
 								</div>
 							</Col>

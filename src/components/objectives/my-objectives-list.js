@@ -47,7 +47,7 @@ const MyObjectivesList = (props) => {
 			  			(
 								objectives.map ( (item, key) => {
 									return (
-										<MyObjectivesListItem key={item._id} objective={item.name} progress={item.progress} />
+										<MyObjectivesListItem key={item._id} objective={item} progress={item.progress} />
 									)
 								})
 							): (
@@ -62,10 +62,14 @@ const MyObjectivesList = (props) => {
 }
 
 const MyObjectivesListItem = (props) => {
+	const objective = props.objective; 
+console.log(objective);
+	const url = '/objectives/'+objective._id;
 	return (
 		<div>
         <ListItem
-          primaryText={props.objective}
+          primaryText={objective.name + ` (${objective.krcount} key results)`}
+          href={url}
 		      leftAvatar={
 		      	<div>
 			        <CircularProgress
