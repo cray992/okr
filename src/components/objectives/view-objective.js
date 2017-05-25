@@ -1,10 +1,41 @@
 import React, {Component} from 'react';
 import { Grid, Row, Col } from 'react-flexbox-grid';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import * as Colors from 'material-ui/styles/colors';
 import * as actions from '../../services/objectives/objectives-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import PageHeader from './page-header';
 import KeyResultsList from './key-results-list';
+import CircularProgress from 'material-ui/CircularProgress';
+import ObjectiveHierarchy from './objective-hierarchy';
+import Divider from 'material-ui/Divider';
+
+const muiTheme = getMuiTheme({
+  palette: {
+    textColor: "#F3294D",
+    primary1Color: "#F3294D",
+    primary2Color: "#F3294D",
+    accent1Color: "#010144",
+    pickerHeaderColor: "#F3294D",
+    alternateTextColor: "#F3294D"
+  }
+});
+
+const styles = {
+	progresstext: {
+		position: 'relative',
+		top: '-75px',
+		left: '10px',
+		fontSize: "30px",
+    display: "block",
+    marginTop: "-.25em"
+	},
+	center: {
+		textAlign: 'center'
+	}
+}
 
 const currentObjective = {
 	name: 'Revenue recognition',
@@ -41,8 +72,29 @@ class ViewObjective extends Component {
 						/>
 						<Grid fluid>
 							<Row>
-								<Col md={1}></Col>
-								<Col md={8}>
+								<Col md={3}>
+									<Row style={styles.center}>
+										<Col md={12} >
+											<br/>
+					            <MuiThemeProvider muiTheme={muiTheme} >
+					            	<div>
+													<CircularProgress mode="determinate" size={120} thickness={8} value={80}/>
+									        <span style={styles.progresstext}>{80}%</span>
+													<Divider />
+								        </div>
+											</MuiThemeProvider>
+										</Col>
+									</Row>
+									<Row style={styles.center}>
+										<Col md={12} >
+											<br/>
+					            <MuiThemeProvider muiTheme={muiTheme} >
+												<ObjectiveHierarchy />
+											</MuiThemeProvider>
+										</Col>
+									</Row>
+								</Col>
+								<Col md={6}>
 									<Row>
 										<Col md={12}>
 											<ObjectiveDetailsView objective={objective}/>

@@ -54,11 +54,11 @@ class Nav extends Component {
     super(props);
     this.openCheckin = this.openCheckin.bind(this); 
     this.state = {searchBoxOn: false};
-    this.openSearch = this.openSearch.bind(this);
+    this.toggleSearch = this.toggleSearch.bind(this);
   }
 
-  openSearch() {
-    this.setState({searchBoxOn: true});
+  toggleSearch() {
+    this.setState({searchBoxOn: !this.state.searchBoxOn});
   }
 
   openCheckin() {
@@ -74,7 +74,7 @@ class Nav extends Component {
               <AutoCompleteSearch />
             </MuiThemeProvider>
             ) : null}
-            <IconButton tooltip="Dashboard" onTouchTap={this.openSearch}>
+            <IconButton tooltip="Dashboard" onTouchTap={this.toggleSearch}>
               <FontIcon className="material-icons">search</FontIcon>
             </IconButton>
             <ToolbarSeparator />
