@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'),
 Objective = mongoose.model('Objective');
 Config = mongoose.model('Config');
+var notificationsCtrl =  require('./notifications');
 
 exports.findAll = function(req, res){
   Objective.find({},function(err, results) {
@@ -114,6 +115,17 @@ exports.findById = function(req, res){
 exports.add = function(req, res) {
   Objective.create(req.body, function (err, obj) {
     if (err) return console.log(err);
+
+    // Create a notification
+    const notification = {
+      actionurl: '/objectives/'+obj._id,
+      notification: 'A new objective assigned to you. Objective: ' + obj.name,
+      personid: req.body.owner.eid,
+      datetime: new Date(),
+      status: 'Unread'
+    };
+    
+    notificationsCtrl.addNewNotification(notification, console.log, console.error);
     return res.send(obj);
   });
 }
@@ -154,6 +166,14 @@ exports.addKeyResult = function (req, res) {
     {$push: {keyresults: req.body}}, {new: true},
     function (err, updatedRec) {
       if (err) return console.log(err);
+      const notification = {
+        actionurl: '/objectives/'+id,
+        notification: 'A new key result is assigned to you. Keyresult: ' + req.body.name,
+        personid: req.body.owner.eid,
+        datetime: new Date(),
+        status: 'Unread'
+      };
+      notificationsCtrl.addNewNotification(notification, console.log, console.error);
       res.send(updatedRec);
   });
 }
@@ -164,6 +184,7 @@ exports.delete = function(req, res){
     return res.send(result);
   });
 };  
+
 exports.import = function(req, res){
   Objective.create(
     { "name": "IT Objective" },
@@ -173,5 +194,12 @@ exports.import = function(req, res){
   , function (err) {
     if (err) return console.log(err);
     return res.sendStatus(202);
+  });
+};
+
+exports.getChildObjectives = function(req, res){
+  const id = req.query.id;
+  Objective.find({pobjective: {'oid':id}},function(err, result) {
+    return res.send(result);
   });
 };

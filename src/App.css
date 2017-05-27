@@ -1,3 +1,7 @@
+html, body, #root {
+  height: 100%;
+}
+
 .App {
   text-align: left;
 }
@@ -25,6 +29,21 @@
 
 .App-search .Select-arrow-zone {
   display: none;
+}
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url(https://static.pexels.com/photos/14621/Warsaw-at-night-free-license-CC0.jpg) center center;
+  background-size: cover;
+  height: 100%;
+}
+
+.login-page form {
+  padding: 30px;
+  border: 1px solid gray;
+  background: rgba(255,255,255,0.5);
 }
 
 @keyframes App-logo-spin {

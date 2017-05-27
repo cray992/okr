@@ -35,7 +35,7 @@ const EmployeesSearch = React.createClass({
 			return Promise.resolve({ options: [] });
 		}
 
-		return fetch(`http://localhost:3001/employees/find/${input}`)
+		return fetch(`http://localhost:3001/api/employees/find/${input}`)
 		.then((response) => response.json())
 		.then((json) => {
 			return { options: json };

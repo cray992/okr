@@ -13,35 +13,6 @@ class NotificationCtrl {
     this.addNewNotification(req.body, res.send, res.send);
   }
 
-  // addNewNotification({url, notification, eid}) {
-  //   const body = {
-  //     actionurl: url,
-  //     notification: notification,
-  //     personid: eid,
-  //     datetime: new Date(),
-  //     status: false
-  //   };
-
-  //   Notification.create(body, function (err, obj) {
-  //     if (err) {
-  //       console.log(err);
-  //       return res.send(err);
-  //     }
-  //     return res.send(obj);
-  //   });
-  // }
-
-  // addNewNotification(req, res) {
-
-  //   Notification.create(req.body, function (err, obj) {
-  //     if (err) {
-  //       console.log(err);
-  //       return res.send(err);
-  //     }
-  //     return res.send(obj);
-  //   });
-  // }
-
   getNotificationByPerson(req, res) {
     const eid = req.query.eid;
     Notification.find({'personid': eid}, function(err, result) {

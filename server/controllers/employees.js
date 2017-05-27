@@ -8,8 +8,9 @@ exports.findAll = function(req, res){
 };
 
 exports.findById = function(req, res){
-  var id = req.params.id;
+  var id = req.query.eid;
   Employee.findOne({'_id':id},function(err, result) {
+    if (err) res.send(err);
     return res.send(result);
   });
 };

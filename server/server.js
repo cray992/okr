@@ -27,7 +27,8 @@ require('./models/employee');
 require('./models/config');
 require('./models/comment');
 require('./models/notification');
-require('./routes')(app);
+require('./models/users');
+app.use('/api', require('./routes'));
 
 app.listen(3001);
 console.log('Listening on port 3001...');

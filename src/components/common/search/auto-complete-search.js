@@ -12,7 +12,7 @@ const AutoCompleteSearch = () => (
       placeholder="Seach OKRs"
       resultsValueKey="_id"
       resultsLabelKey="name"
-      callbackUrl="http://localhost:3001/objectives/filter?name="
+      callbackUrl="http://localhost:3001/api/objectives/filter?name="
     />
   </form>
 );

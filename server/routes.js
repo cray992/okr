@@ -1,33 +1,68 @@
-const routes = function(app){
-	var objectives = require('./controllers/objectives');
-	var employees = require('./controllers/employees');
-	var config = require('./controllers/config');
-	var comments = require('./controllers/comments');
+var objectives = require('./controllers/objectives');
+var employees = require('./controllers/employees');
+var config = require('./controllers/config');
+var comments = require('./controllers/comments');
+var notifications = require('./controllers/notifications');
+var user = require('./controllers/user');
+var router = require('express').Router();
+var configFile = require('./config');
+var jwt = require('jsonwebtoken');
 
-	app.get('/empobjprogress', objectives.getObjectivesProgress);
-	app.get('/objectives/filter', objectives.findByName);
-	// app.get('/objectives/hierarchy', objectives.getParentObjectives);
-	app.get('/objectives', objectives.findAll);
-	app.get('/objectives/:id', objectives.findById);
+router.post('/register', user.register);
+router.post('/login', user.login);
 
-	app.post('/objectives', objectives.add);
-	app.put('/objectives/:id', objectives.update);
-	app.delete('/objectives/:id', objectives.delete);
-	app.get('/objectives/import', objectives.import);
+router.use(function(req, res, next) {
 
-	app.post('/objectives/:id/keyresults', objectives.addKeyResult);
-	app.post('/keyresults/checkin', objectives.checkinKeyResults);
+  //FIXME
+  if (req.url === '/login' || req.url === '/register') {
+    return next();
+  }
 
-	app.get('/keyresults/filter', objectives.findKeyResultsByEmp);
+	const token = req.body.token || req.query.token;
 
-	app.get('/employees/filter', employees.findByName);
-	app.get('/employees/import', employees.import);
+  if (token) {
+    jwt.verify(token, configFile.secret, function(err, decoded) {      
+      if (err) {
+        return res.json({ message: 'Failed to authenticate token.' });    
+      } else {
+        next();
+      }
+    });
+  } else {
+    res.status(403).send({
+        message: 'No token provided.' 
+    });
+  } 
+});
 
-	app.get('/config', config.findByName);
+router.get('/empobjprogress', objectives.getObjectivesProgress);
+router.get('/objectives/filter', objectives.findByName);
+// router.get('/objectives/hierarchy', objectives.getParentObjectives);
 
-	app.post('/comments', comments.addNewComment);
-	app.get('/comments', comments.getCommentsByRefId);
+router.get('/objectives', objectives.findAll);
+router.get('/objectives/:id', objectives.findById);
 
-}
+router.get('/childobjectives', objectives.getChildObjectives);
 
-module.exports = routes;
+router.post('/objectives', objectives.add);
+router.put('/objectives/:id', objectives.update);
+router.delete('/objectives/:id', objectives.delete);
+router.get('/objectives/import', objectives.import);
+
+router.post('/objectives/:id/keyresults', objectives.addKeyResult);
+router.post('/keyresults/checkin', objectives.checkinKeyResults);
+
+router.get('/keyresults/filter', objectives.findKeyResultsByEmp);
+
+router.get('/employees/filter', employees.findByName);
+router.get('/employees/import', employees.import);
+router.get('/employees/findById', employees.findById);
+
+router.get('/config', config.findByName);
+
+router.post('/comments', comments.addNewComment);
+router.get('/comments', comments.getCommentsByRefId);
+
+router.get('/notifications', notifications.getNotificationByPerson);
+
+module.exports = router;

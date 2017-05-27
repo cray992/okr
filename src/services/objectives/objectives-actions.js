@@ -8,6 +8,13 @@ export function getObjectivesCompleted (data) {
 	}
 }
 
+export function getChildObjectiveCompleted (data) {
+	return  {
+		type: "GET_CHILD_OBJECTIVES_COMPLETED",
+		payload: data
+	}
+}
+
 export function getObjectiveCompleted (data) {
 	return  {
 		type: "GET_OBJECTIVE_COMPLETED",
@@ -66,7 +73,7 @@ export function checkinClicked() {
 
 export function getObjectivesProgressByEmp(data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/empobjprogress?eid='+data, {
+		return fetch('http://localhost:3001/api/empobjprogress?eid='+data, {
 			method: "GET"
 		})
 		.then((res) => res.json())
@@ -76,7 +83,7 @@ export function getObjectivesProgressByEmp(data) {
 
 export function findObjectivesByName(data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/objectives/filter?name='+data, {
+		return fetch('http://localhost:3001/api/objectives/filter?name='+data, {
 			method: "GET"
 		})
 		.then((res) => res.json())
@@ -86,7 +93,7 @@ export function findObjectivesByName(data) {
 
 export function fetchCurrentEmployeeObjectives(eid) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/objectives/filter?eid='+eid, {
+		return fetch('http://localhost:3001/api/objectives/filter?eid='+eid, {
 			method: "GET"
 		})
 		.then((res) => res.json())
@@ -96,7 +103,7 @@ export function fetchCurrentEmployeeObjectives(eid) {
 
 export function fetchCurrentEmployeeKeyResults(eid) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/keyresults/filter?eid='+eid, {
+		return fetch('http://localhost:3001/api/keyresults/filter?eid='+eid, {
 			method: "GET"
 		})
 		.then((res) => res.json())
@@ -119,7 +126,7 @@ export function checkin(data) {
 	const list = [...dArr];
 
 	return (dispatch) => {
-		return fetch('http://localhost:3001/keyresults/checkin', {
+		return fetch('http://localhost:3001/api/keyresults/checkin', {
 			method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -148,7 +155,7 @@ export function saveNewObjective(data) {
 		pobjective = {oid: data.parent._id};
 	}
 	return (dispatch) => {
-		return fetch('http://localhost:3001/objectives', {
+		return fetch('http://localhost:3001/api/objectives', {
 			method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -171,7 +178,7 @@ export function saveNewObjective(data) {
 
 export function saveNewKeyResult(objectiveId, data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/objectives/'+objectiveId+'/keyresults', {
+		return fetch('http://localhost:3001/api/objectives/'+objectiveId+'/keyresults', {
 			method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -194,10 +201,20 @@ export function saveNewKeyResult(objectiveId, data) {
 
 export function getObjectiveDetails (id) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/objectives/'+id, {
+		return fetch('http://localhost:3001/api/objectives/'+id, {
 			method: "GET"
 		})
 		.then((res) => res.json())
 		.then((data) => dispatch(getObjectiveCompleted(data)))
+	}
+}
+
+export function getChildObjectives (id) {
+	return (dispatch) => {
+		return fetch('http://localhost:3001/api/childobjectives?id='+id, {
+			method: "GET"
+		})
+		.then((res) => res.json())
+		.then((data) => dispatch(getChildObjectiveCompleted(data)))
 	}
 }

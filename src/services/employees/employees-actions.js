@@ -8,7 +8,7 @@ export function getEmployeesCompleted (data) {
 
 export function findEmployeesByName(data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/employees/filter?name='+data, {
+		return fetch('http://localhost:3001/api/employees/filter?name='+data, {
 			method: "GET"
 		})
 		.then((res) => res.json())

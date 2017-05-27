@@ -4,7 +4,8 @@ Schema = mongoose.Schema;
 var EmployeeSchema = new Schema({
   name: String,
   email: String,
-  manager: String
+  manager: String,
+  url: String
 });
 
 EmployeeSchema.pre('save', function(next) {

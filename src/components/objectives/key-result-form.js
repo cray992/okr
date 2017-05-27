@@ -68,7 +68,7 @@ let KeyResultForm = props => {
                 resultsValueKey="_id"
                 resultsLabelKey="name"
                 callback={props.empActions.findEmployeesByName}
-                callbackUrl="http://localhost:3001/employees/filter?name="
+                callbackUrl="http://localhost:3001/api/employees/filter?name="
                 results={props.employee_results}
             />  
           </Col>
@@ -100,7 +100,7 @@ let KeyResultForm = props => {
                 creatable={true}
                 resultsValueKey="_id"
                 resultsLabelKey="value"
-                callbackUrl="http://localhost:3001/config?domain=units&value="
+                callbackUrl="http://localhost:3001/api/config?domain=units&value="
             />
           </Col>
         </Row>

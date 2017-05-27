@@ -12,7 +12,7 @@ exports.findByName = function(req, res) {
   const domain = req.query.domain;
   Config.find({ 'domain': domain, 'value': {'$regex': value, $options: 'i'} },function(err, result) {
     return res.send(result);
-  });
+  }); 
 };
 
 exports.findById = function(req, res){

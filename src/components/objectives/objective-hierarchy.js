@@ -9,9 +9,14 @@ const styles = {
 		fontFamily: 'Roboto, sans-serif',
 		borderColor: '#E0E0E0',
 		borderRadius: '5px',
-		padding: '3px',
+		fontSize: 'small',
+		paddingLeft: '3px',
+		paddingRight: '3px',
+		paddingTop: '5px',
+		paddingBottom: '5px',
 		margin: '3px',
-		minHeight: '30px'
+		minHeight: '30px',
+		cursor: 'pointer'
 	} 
 }
 

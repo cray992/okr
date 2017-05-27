@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import LinearProgress from 'material-ui/LinearProgress';
 import MyObjectivesHeader from './my-objectives-header';
-import MyObjectivesList from './my-objectives-list';
+import Objectiveslist from './objectives-list';
 import * as actions from '../../services/objectives/objectives-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -68,7 +68,7 @@ class MyObjectives extends Component {
 							<Col md={2}/>
 							<Col md={7}>
 								<br/>
-								<MyObjectivesList objectives={objectives}/>
+								<Objectiveslist title="My Objectives" objectives={objectives}/>
 							</Col>
 						</Row>
 					</Grid>

@@ -11,15 +11,31 @@ import KeyResultsList from './key-results-list';
 import CircularProgress from 'material-ui/CircularProgress';
 import ObjectiveHierarchy from './objective-hierarchy';
 import Divider from 'material-ui/Divider';
+import CommentsContainer from '../comments/comments-container';
+import Chip from 'material-ui/Chip';
+import Avatar from 'material-ui/Avatar';
+import {Tabs, Tab} from 'material-ui/Tabs';
+import Objectiveslist from './objectives-list';
 
 const muiTheme = getMuiTheme({
   palette: {
-    textColor: "#F3294D",
+    textColor: Colors.darkBlack,
     primary1Color: "#F3294D",
     primary2Color: "#F3294D",
     accent1Color: "#010144",
     pickerHeaderColor: "#F3294D",
-    alternateTextColor: "#F3294D"
+    alternateTextColor: Colors.darkBlack
+  }
+});
+
+const muiThemeTab = getMuiTheme({
+  palette: {
+    textColor: Colors.darkBlack,
+    primary1Color: "#FFF",
+    primary2Color: "#F3294D",
+    accent1Color: "#F3294D",
+    pickerHeaderColor: "#F3294D",
+    alternateTextColor: Colors.darkBlack
   }
 });
 
@@ -34,17 +50,11 @@ const styles = {
 	},
 	center: {
 		textAlign: 'center'
-	}
+	},
+  chip: {
+    margin: 4,
+  }
 }
-
-const currentObjective = {
-	name: 'Revenue recognition',
-	keyresults: [
-		{name: 'RMS solution by end of September 2017'},
-		{name: 'Design CLM to upload contracts by end of July 2017'},
-		{name: 'Design Revenue datamart by end of Aug 2017'}		
-	]
-};
 
 const style = {
 	objview: {
@@ -56,12 +66,19 @@ class ViewObjective extends Component {
 	constructor (props) {
 		super(props);
 		props.actions.getObjectiveDetails(props.params.id);
+		props.actions.getChildObjectives(props.params.id);
+    this.state = { tabValue: 'kr', };
+		this.handleTabChange = this.handleTabChange.bind(this);
 	}
+  
+  handleTabChange (value) {
+    this.setState({
+      tabValue: value,
+    });
+  };
 
 	render () {
 		const objective = this.props.currentObjective;
-		console.log(objective);
-
 		return (
 			<div>
 			{
@@ -72,7 +89,14 @@ class ViewObjective extends Component {
 						/>
 						<Grid fluid>
 							<Row>
-								<Col md={3}>
+								<Col md={3} style={{borderRightStyle:"dotted", borderRightWidth:'thin', borderRightColor: '#9BA1A9'}}>
+									<Row>
+										<Col md={12}>
+					            <MuiThemeProvider muiTheme={muiTheme} >
+												<ObjectiveDetailsView objective={objective}/>
+											</MuiThemeProvider>
+										</Col>
+									</Row>
 									<Row style={styles.center}>
 										<Col md={12} >
 											<br/>
@@ -94,17 +118,36 @@ class ViewObjective extends Component {
 										</Col>
 									</Row>
 								</Col>
+
 								<Col md={6}>
 									<Row>
 										<Col md={12}>
-											<ObjectiveDetailsView objective={objective}/>
-										</Col>
-									</Row>
-									<Row>
-										<Col md={12}>
-											<KeyResultsList keyresults={objective.keyresults}/>
+					            <MuiThemeProvider muiTheme={muiThemeTab} >
+										    <Tabs
+										      value={this.state.tabValue}
+										      onChange={this.handleTabChange}
+										    >
+										      <Tab label="Key Results" value="kr">
+														<KeyResultsList keyresults={objective.keyresults}/>
+										      </Tab>
+										      <Tab label="Child Objectives" value="co">
+														<Objectiveslist objectives={this.props.current_child_objectives}/>
+										      </Tab>
+										    </Tabs>
+					            </MuiThemeProvider>
 										</Col>
 									<Col md={3}></Col>
+									</Row>
+								</Col>
+								
+								<Col md={3} style={{borderLeftStyle:"dotted", borderLeftWidth:'thin', borderLeftColor: '#9BA1A9'}}>
+									<Row>
+										<Col md={12}>
+											<br/>
+					            <MuiThemeProvider muiTheme={muiTheme} >
+					            	<CommentsContainer objective={objective}/>
+											</MuiThemeProvider>
+										</Col>
 									</Row>
 								</Col>
 							</Row>
@@ -120,26 +163,22 @@ class ViewObjective extends Component {
 const ObjectiveDetailsView = (props) => (
 	<div>
 		<br/>
-		<Row style={style.objview}>
-			<Col md={2}><b>Owner:</b></Col>
-			<Col md={10}>{props.objective.owner.name}</Col>
+		<Row >
+			<Col md={6}>
+        <Chip style={styles.chip}>
+          <Avatar src="/person-avatar.png" />
+          {props.objective.owner.name}
+        </Chip>
+      </Col>
+			<Col md={6}>
+        <Chip style={styles.chip}> {props.objective.category} </Chip>
+      </Col>
 		</Row>
-		<Row style={style.objview}>
-			<Col md={2}><b>Description:</b></Col>
-			<Col md={10}>{props.objective.description}</Col>
+		<Row >
+			<Col md={12}><br/>{props.objective.description}</Col>
 		</Row>
-		<Row style={style.objview}>
-			<Col md={2}><b>Category:</b></Col>
-			<Col md={10}>{props.objective.category}</Col>
-		</Row>
-		<Row style={style.objview}>
-			<Col md={2}><b>Contingency:</b></Col>
-			<Col md={10}>{props.objective.contingency}</Col>
-		</Row>
-		<Row style={style.objview}>
-			<Col md={2}><b>Tags:</b></Col>
-			<Col md={10}>{props.objective.tags.map(x => x.name).join(', ')}</Col>
-		</Row>
+		<br/>
+		<Divider />
 	</div>
 )
 
@@ -147,8 +186,9 @@ const ObjectiveDetailsView = (props) => (
 export const mapStateToProps = ( state ) => {
   return (
     { 
-      currentObjective: state.objectives.currentObjective
-     }
+      currentObjective: state.objectives.currentObjective,
+      current_child_objectives: state.objectives.current_child_objectives
+    }
   )
 }
 

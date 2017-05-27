@@ -34,13 +34,13 @@ const styles = {
 	}
 }
 
-const MyObjectivesList = (props) => {
+const ObjectivesList = (props) => {
   const objectives = props.objectives;
   console.log(props);
 	return(
 		<MuiThemeProvider muiTheme={muiTheme}>
 				<div>
-			    <Subheader style={styles.subheader}>My Obectives</Subheader>
+			    <Subheader style={styles.subheader}>{props.title}</Subheader>
 		    <List>
 			  	{
 			  		(objectives ? 
@@ -86,4 +86,4 @@ console.log(objective);
 	);
 }
 
-export default MyObjectivesList;
+export default ObjectivesList;

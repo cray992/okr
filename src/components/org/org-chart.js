@@ -8,16 +8,17 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 
 const orgData = [
-    { "name": "Ravi Botla", "title": "Director", "location": "San Mateo, CA", "email": "rbotla@changehealthcare.com", "manager": "bennie.jones@McKesson.com" },
-    { "name": "Dean Quach", "title": "Sr. Director", "location": "Nashville, TN", "email": "dquach@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "Holt Zeidler","title": "Director", "location": "Chicago, IL",  "email": "HZeidler@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "Keith Weinheimer","title": "Director", "location": "Nashville, TN",  "email": "kweinheimer@changehealthcare.com", "manager": "bennie.jones@McKesson.com" },
-    { "name": "Holly Hon", "title": "Sr. Director", "location": "San Mateo, CA", "email": "hhon@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "Brian North", "title": "Sr. Director", "location": "Nashville, TN", "email": "brian.north@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "Bennie Jones", "title": "VP", "location": "Boston, MA", "email": "bennie.jones@McKesson.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "John Guillebeaux", "title": "SVP", "location": "San Mateo, CA", "email": "jguillebeaux@changehealthcare.com", "manager": "achoy@changehealthcare.com" },
-    { "name": "Alex Choy", "title": "EVP & CIO", "location": "San Mateo, CA", "email": "achoy@changehealthcare.com", "manager": "NdeCrescenzo@changehealthcare.com" },
-    { "name": "Neil De Crescenzo", "title": "CEO", "location": "Nashville, TN", "email": "NdeCrescenzo@changehealthcare.com" }
+    { "name": "Ravi Botla", url: "/profiles/ravi.jpg", "title": "Director", "location": "San Mateo, CA", "email": "rbotla@changehealthcare.com", "manager": "bennie.jones@McKesson.com" },
+    { "name": "Dean Quach", url: "/profiles/dean.jpg", "title": "Sr. Director", "location": "Nashville, TN", "email": "dquach@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
+    { "name": "Holt Zeidler", url: "/profiles/holt.jpg","title": "Director", "location": "Chicago, IL",  "email": "HZeidler@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
+    { "name": "Keith Weinheimer", url: "/profiles/keith.png", "title": "Director", "location": "Nashville, TN",  "email": "kweinheimer@changehealthcare.com", "manager": "bennie.jones@McKesson.com" },
+    { "name": "Holly Hon", url: "/profiles/default.jpg", "title": "Sr. Director", "location": "San Mateo, CA", "email": "hhon@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
+    { "name": "Angela H", url: "/profiles/angela.jpg", "title": "VP", "location": "Nashville, TN", "email": "", "manager": "jguillebeaux@changehealthcare.com" },
+    { "name": "Brian North", url: "/profiles/brian.jpg", "title": "Sr. Director", "location": "Nashville, TN", "email": "brian.north@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
+    { "name": "Bennie Jones", url: "/profiles/default.jpg", "title": "VP", "location": "Boston, MA", "email": "bennie.jones@McKesson.com", "manager": "jguillebeaux@changehealthcare.com" },
+    { "name": "John Guillebeaux", url: "/profiles/john.jpg", "title": "SVP", "location": "San Mateo, CA", "email": "jguillebeaux@changehealthcare.com", "manager": "achoy@changehealthcare.com" },
+    { "name": "Alex Choy", url: "/profiles/alex.jpg", "title": "EVP & CIO", "location": "San Mateo, CA", "email": "achoy@changehealthcare.com", "manager": "NdeCrescenzo@changehealthcare.com" },
+    { "name": "Neil De Crescenzo",url: "/profiles/neil.jpg", "title": "CEO", "location": "Nashville, TN", "email": "NdeCrescenzo@changehealthcare.com" }
 ];
 
 const styles = {
@@ -41,7 +42,7 @@ const OrgChart = (props) => {
 			</Row>
 			<Row>
 				<Col md={12}>
-					<OrgChartMain employee={orgData[7]} manager={orgData[8]} org={orgData}/>
+					<OrgChartMain employee={orgData[8]} manager={orgData[9]} org={orgData}/>
 				</Col>
 			</Row>
 		</Grid>
@@ -108,7 +109,7 @@ const BlankRow = () => {
 }
 
 const OrgChartCard = (props) => {
-	const {name, email, manager, title, location} = props.rec;
+	const {name, email, url, manager, title, location} = props.rec;
 	//{name, email, title, eno, location, company, department, glstring, wphone, temps, tmgrs} = this.props.data;
 	return (
 	 	<MuiThemeProvider muiTheme={getMuiTheme()}>
@@ -116,7 +117,7 @@ const OrgChartCard = (props) => {
 		    <CardHeader
 		      title={name}
 		      subtitle={title}
-		      avatar="/person-avatar.png"
+		      avatar={url}
 		      titleColor="#F3294D"
 		    />
 		    <CardText style={styles.details}>

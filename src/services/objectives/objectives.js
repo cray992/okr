@@ -20,7 +20,9 @@ export default ( state = initialState, { type, payload } ) => {
     case "GET_OBJECTIVE_COMPLETED":
       return {...state, currentObjective: payload};
     case "GET_OBJECTIVES_COMPLETED":
-      return {objective_results: payload};
+      return {...state, objective_results: payload};
+    case "GET_CHILD_OBJECTIVES_COMPLETED":
+      return {...state, current_child_objectives: payload};
     case "GET_KEY_RESULTS_COMPLETED":
       return {...state, keyresults_fetch_results: payload};
     case "GET_OBJ_PROGRESS_COMPLETED":

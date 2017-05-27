@@ -7,7 +7,7 @@ export function getObjectivesCompleted (data) {
 
 export function saveNewObjective(data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/objectives', {
+		return fetch('http://localhost:3001/api/objectives', {
 			method: "POST",
 			body: data
 		})
@@ -18,7 +18,7 @@ export function saveNewObjective(data) {
 
 export function getObjectives () {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/objectives', {
+		return fetch('http://localhost:3001/api/objectives', {
 			method: "GET"
 		})
 		.then((res) => res.json())
