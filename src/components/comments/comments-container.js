@@ -2,12 +2,28 @@ import React, {Component} from 'react';
 import * as actions from '../../services/comments/comments-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { Field, reduxForm } from 'redux-form';
 import CommentsList from './comments-list';
 import './_comments.css';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import FontIcon from 'material-ui/FontIcon';
 import { MentionsInput, Mention } from 'react-mentions';
+import defaultStyle from './defaultStyle';
+import defaultMentionStyle from './defaultMentionStyle';
+import RaisedButton from 'material-ui/RaisedButton';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import * as Colors from 'material-ui/styles/colors';
+
+const muiTheme = getMuiTheme({
+  palette: {
+    textColor: Colors.darkBlack,
+    primary1Color: "#F3294D",
+    accent1Color: "#F42A4D",
+    pickerHeaderColor: "#8400D9",
+    alternateTextColor: '#9BA1A9'
+  },
+}); 
+
 
 class CommentsContainer extends Component {
 	constructor(props) {
@@ -19,16 +35,14 @@ class CommentsContainer extends Component {
 			mentions: [],
 			users: []
 		}
-		
+
 		this.handleChange = this.handleChange.bind(this);
-		this.renderUserSuggestion = this.renderUserSuggestion.bind(this);
-		this.renderTagSuggestion = this.renderTagSuggestion.bind(this);
 		this.handleSend = this.handleSend.bind(this);
 		this.getUsers = this.getUsers.bind(this);
 	}
 
 	getUsers(searchTxt) {
-		return fetch('http://localhost:3001/api/employees/filter?name='+searchTxt)
+		fetch('http://localhost:3001/api/employees/filter?name='+searchTxt)
     .then((response) => response.json())
     .then((json) => {
     	var users = json.map(user => ({ id: user._id, display: user.name }))
@@ -39,41 +53,36 @@ class CommentsContainer extends Component {
 	}
 
 	handleSend() {
-		var dataToServer = {
-			mentions: this.state.mentions,
-			value: this.state.value
-		};
+		if (this.state.value === '') return;
 
+		// Process the mention info to remove (id) from the text
+		const newVal = this.state.value.replace(/\((.*?)\)/g, '');
+
+		const dataToServer = {
+			mentions: this.state.mentions,
+			value: newVal
+		};
 		// in the server:
 		// we will check if there're mentions
 		// then create notification for each one with "value"
 
-		console.log(dataToServer);
+		this.props.actions.saveNewComment(this.props.objective._id, '5912036687a30c1a28d99142', dataToServer);
+  	this.setState({
+  		value: ''
+  	});
 	}
 
 	handleChange(event, newValue, newPlainTextValue, mentions) {
-		//e.stopPropagation();
-		//this.state.value += e.target.value;
-		console.log(event.target.value, newValue, newPlainTextValue, mentions);
-
+		//event.stopPropagation();
 		this.setState({
-			value: event.target.value,
+			value: newValue,
 			mentions: mentions
 		});
 
-		if(newValue.length > 2) {
-			var searchTxt = newValue.slice(1);
-			this.getUsers(searchTxt)
-		}
-	}
-
-	renderUserSuggestion() {
-		console.log('renderUserSuggestion called');
-		return this.props.users;
-	}
-
-	renderTagSuggestion() {
-		console.log('renderTagSuggestion called');
+		// if(newValue.length > 2) {
+			var searchTxt = event.target.value.slice(1);
+			this.getUsers(searchTxt);
+		// }
 	}
 
 	render () {
@@ -91,24 +100,30 @@ class CommentsContainer extends Component {
 					</div>
 
           <div className="panel-footer">
-              <div className="input-group">
+              <div>
 									<MentionsInput
 										value={this.state.value}
 										onChange={this.handleChange}
+						        placeholder={"Mention people using '@'"}
 										markup="@[__display__](__id__)"
+						        style={ defaultStyle({ multiLine: true }) }
 										>
 									    <Mention trigger="@"
-									        data={this.state.users}
-									        renderSuggestion={ (suggestion, search, highlightedDisplay) => (
+								        data={ this.state.users }
+							          style={ defaultMentionStyle }
+							          appendSpaceOnAdd={true}
+								        renderSuggestion={ (suggestion, search, highlightedDisplay) => {
+								        	return (
 								            <div className="user">
 								              { highlightedDisplay }
 								            </div>
-								          )}
-									       />
+							          	)
+							          }}
+									    />
 									</MentionsInput>
-                  <span className="input-group-btn">
-                      <button onClick={this.handleSend} className="btn btn-warning btn-sm" id="btn-chat">Send</button>
-                  </span>
+									<MuiThemeProvider muiTheme={muiTheme}>
+							    	<RaisedButton label="Send" style={{width: '100%'}} onTouchTap={this.handleSend}/>
+							    </MuiThemeProvider>
               </div>
           </div>
 
@@ -117,11 +132,6 @@ class CommentsContainer extends Component {
 	);
 	}
 }
-
-// Decorate the form component
-CommentsContainer = reduxForm({
-  form: 'comment'
-})(CommentsContainer);
 
 // Redux hook functions to connect and fetch data from the store
 export const mapStateToProps = ( state ) => {

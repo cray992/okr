@@ -6,14 +6,13 @@ import moment from 'moment';
 
 const CommentsList = (props) => {
 	const comments = props.list;
-	console.log(comments);
 	return (
     <ul className="chat">
 		{
 			comments ?
 			comments.map( (item, i) => {
 				const dt = new Date(item.datetime);
-				const dtString = moment(dt).startOf('hour').fromNow();
+				const dtString = moment(dt).startOf('minute').fromNow();
 				return (
 					<li className="clearfix">
               <div className="chat-body clearfix">

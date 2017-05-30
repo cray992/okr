@@ -35,7 +35,7 @@ html, body, #root {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url(https://static.pexels.com/photos/14621/Warsaw-at-night-free-license-CC0.jpg) center center;
+  background: url(/background.jpg) center center;
   background-size: cover;
   height: 100%;
 }
@@ -44,6 +44,8 @@ html, body, #root {
   padding: 30px;
   border: 1px solid gray;
   background: rgba(255,255,255,0.5);
+  border-radius: 5px;
+  width: 250px;
 }
 
 @keyframes App-logo-spin {

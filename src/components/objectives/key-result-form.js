@@ -13,32 +13,15 @@ const validate = values => {
   const errors = {}
   const requiredFields = [ 'keyresult', 'owner', 'quarter', 'target', 'units' ]
   requiredFields.forEach(field => {
-    console.log('Values: ', values);
     if (!values[ field ]) {
       errors[ field ] = 'Required'
     }
   })
 
-  console.log('owner value: ', values.owner);
-
   if (values.target && !/^\d+$/i.test(values.target)) {
     errors.target = 'Please enter a numeric value.'
   }
   return errors
-}
-//
-// const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-//   <TextField hintText={label}
-//     floatingLabelText={label}
-//     errorText={touched && error}
-//     fullWidth={true}
-//     {...input}
-//     {...custom}
-//   />
-// )
-
-const logChange = () => {
-  console.log('field value');
 }
 
 let KeyResultForm = props => {

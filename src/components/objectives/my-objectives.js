@@ -58,7 +58,7 @@ class MyObjectives extends Component {
 							<Col md={2}/>
 							<Col md={7}>
 								<br/>
-								<span style={styles.progress}> {empProgress}% </span>
+								<span style={styles.progress}> {empProgress || 0}% </span>
 				      	<MuiThemeProvider muiTheme={getMuiTheme()}>
 	      					<LinearProgress mode="determinate" color="#F3294D" value={empProgress} />
 								</MuiThemeProvider>

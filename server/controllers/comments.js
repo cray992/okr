@@ -13,7 +13,7 @@ class CommentCtrl {
       req.body.persons.forEach( person => {
         const notification = {
           actionurl: '/objectives/'+req.body.refid,
-          notification: 'A new comment added for objective.',
+          notification: 'You got a new message - ' + req.body.comment,
           personid: person,
           datetime: new Date(),
           status: 'Unread'

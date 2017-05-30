@@ -10,12 +10,12 @@ import PageHeader from './page-header';
 import KeyResultsList from './key-results-list';
 import CircularProgress from 'material-ui/CircularProgress';
 import ObjectiveHierarchy from './objective-hierarchy';
-import Divider from 'material-ui/Divider';
 import CommentsContainer from '../comments/comments-container';
 import Chip from 'material-ui/Chip';
 import Avatar from 'material-ui/Avatar';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Objectiveslist from './objectives-list';
+import ObjectiveDashboard from './objective-dashboard';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -65,8 +65,10 @@ const style = {
 class ViewObjective extends Component {
 	constructor (props) {
 		super(props);
+		console.log('inside ViewObjective constructor');
 		props.actions.getObjectiveDetails(props.params.id);
 		props.actions.getChildObjectives(props.params.id);
+		props.actions.getAllParentObjectives(props.params.id);
     this.state = { tabValue: 'kr', };
 		this.handleTabChange = this.handleTabChange.bind(this);
 	}
@@ -104,7 +106,6 @@ class ViewObjective extends Component {
 					            	<div>
 													<CircularProgress mode="determinate" size={120} thickness={8} value={80}/>
 									        <span style={styles.progresstext}>{80}%</span>
-													<Divider />
 								        </div>
 											</MuiThemeProvider>
 										</Col>
@@ -113,7 +114,7 @@ class ViewObjective extends Component {
 										<Col md={12} >
 											<br/>
 					            <MuiThemeProvider muiTheme={muiTheme} >
-												<ObjectiveHierarchy />
+												<ObjectiveHierarchy parents={this.props.current_all_parent_objectives}/>
 											</MuiThemeProvider>
 										</Col>
 									</Row>
@@ -130,7 +131,7 @@ class ViewObjective extends Component {
 										      <Tab label="Key Results" value="kr">
 														<KeyResultsList keyresults={objective.keyresults}/>
 										      </Tab>
-										      <Tab label="Child Objectives" value="co">
+										      <Tab label="Linked Objectives" value="co">
 														<Objectiveslist objectives={this.props.current_child_objectives}/>
 										      </Tab>
 										    </Tabs>
@@ -143,7 +144,6 @@ class ViewObjective extends Component {
 								<Col md={3} style={{borderLeftStyle:"dotted", borderLeftWidth:'thin', borderLeftColor: '#9BA1A9'}}>
 									<Row>
 										<Col md={12}>
-											<br/>
 					            <MuiThemeProvider muiTheme={muiTheme} >
 					            	<CommentsContainer objective={objective}/>
 											</MuiThemeProvider>
@@ -178,7 +178,6 @@ const ObjectiveDetailsView = (props) => (
 			<Col md={12}><br/>{props.objective.description}</Col>
 		</Row>
 		<br/>
-		<Divider />
 	</div>
 )
 
@@ -187,7 +186,8 @@ export const mapStateToProps = ( state ) => {
   return (
     { 
       currentObjective: state.objectives.currentObjective,
-      current_child_objectives: state.objectives.current_child_objectives
+      current_child_objectives: state.objectives.current_child_objectives,
+      current_all_parent_objectives: state.objectives.current_all_parent_objectives
     }
   )
 }

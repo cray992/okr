@@ -7,7 +7,7 @@ var CommentSchema = new Schema({
 	persons: [String],
 	comment: String,
 	commentedby: String,
-	datetime: {required: false, type: Date}
+	datetime: Date
 });
 
 CommentSchema.pre('save', function(next) {

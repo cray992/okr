@@ -28,7 +28,7 @@ const NotificationsDialog = (props) => {
 			  			(
 								notifications.map ( (item, key) => {
 									const dt = new Date(item.datetime);
-									const dtString = moment(dt).startOf('hour').fromNow();
+									const dtString = moment(dt).startOf('minute').fromNow();
 
 									return (
 										<div>

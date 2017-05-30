@@ -139,7 +139,6 @@ const OrgChartCard = (props) => {
 		  </Card>
 	  </MuiThemeProvider>
 	);
-
 }
 
 export default OrgChart;

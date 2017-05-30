@@ -10,31 +10,34 @@ var jwt = require('jsonwebtoken');
 
 router.post('/register', user.register);
 router.post('/login', user.login);
+router.get('/calcprogress', objectives.calcObjProgress);
 
-router.use(function(req, res, next) {
+// router.use(function(req, res, next) {
 
-  //FIXME
-  if (req.url === '/login' || req.url === '/register') {
-    return next();
-  }
+//   //FIXME
+//   if (req.url === '/login' || req.url === '/register') {
+//     return next();
+//   }
 
-	const token = req.body.token || req.query.token;
+// 	const token = req.body.token || req.query.token;
 
-  if (token) {
-    jwt.verify(token, configFile.secret, function(err, decoded) {      
-      if (err) {
-        return res.json({ message: 'Failed to authenticate token.' });    
-      } else {
-        next();
-      }
-    });
-  } else {
-    res.status(403).send({
-        message: 'No token provided.' 
-    });
-  } 
-});
+//   if (token) {
+//     jwt.verify(token, configFile.secret, function(err, decoded) {      
+//       if (err) {
+//         return res.json({ message: 'Failed to authenticate token.' });    
+//       } else {
+//         next();
+//       }
+//     });
+//   } else {
+//     res.status(403).send({
+//         message: 'No token provided.' 
+//     });
+//   } 
+// });
 
+
+router.get('/objectives/getAllParentObjectives', objectives.getAllParentObjectives);
 router.get('/empobjprogress', objectives.getObjectivesProgress);
 router.get('/objectives/filter', objectives.findByName);
 // router.get('/objectives/hierarchy', objectives.getParentObjectives);

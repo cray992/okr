@@ -7,6 +7,12 @@ export function getObjectivesCompleted (data) {
 		payload: data
 	}
 }
+export function getAllParentObjectiveCompleted (data) {
+	return  {
+		type: "GET_ALL_PARENT_OBJECTIVES_COMPLETED",
+		payload: data
+	}
+}
 
 export function getChildObjectiveCompleted (data) {
 	return  {
@@ -168,6 +174,7 @@ export function saveNewObjective(data) {
 			  owner: {eid: data.owner._id, name: data.owner.name},
 			  category: data.category,
 			  contingency: data.contingency,
+			  progress: 0,
 			  tags: tags
       })
 		})
@@ -190,6 +197,7 @@ export function saveNewKeyResult(objectiveId, data) {
       	quarter: data.quarter,
       	target: data.target,
       	actual: 0,
+      	progress: 0,
       	units: {uid: data.units._id, value: data.units.value}
       })
 		})
@@ -216,5 +224,16 @@ export function getChildObjectives (id) {
 		})
 		.then((res) => res.json())
 		.then((data) => dispatch(getChildObjectiveCompleted(data)))
+	}
+}
+
+export function getAllParentObjectives(id) {
+	console.log('called getAllParentObjectives: ', id);
+	return (dispatch) => {
+		return fetch('http://localhost:3001/api/objectives/getAllParentObjectives?id='+id, {
+			method: "GET"
+		})
+		.then((res) => res.json())
+		.then((data) => dispatch(getAllParentObjectiveCompleted(data)))
 	}
 }

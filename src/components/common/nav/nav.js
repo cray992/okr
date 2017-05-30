@@ -68,6 +68,10 @@ class Nav extends Component {
     props.notificationActions.getMyNotifications('5912036687a30c1a28d99142');
   }
 
+  // componentWillUpdate(props) {
+  //   props.notificationActions.getMyNotifications('5912036687a30c1a28d99142'); 
+  // }
+
   handleOnNotificationOpen(event) {
     // This prevents ghost click.
     event.preventDefault();
@@ -125,18 +129,12 @@ class Nav extends Component {
 
             <IconButton tooltip="Notifications" onTouchTap={this.handleOnNotificationOpen}>
               <NotificationsIcon />
+              <Badge
+                badgeContent={notificationCount || 0}
+                badgeStyle={{top: -35, right: -1, width: 18, borderStyle: 'none', height: 18, color: '#F3294D', borderStyle: 'solid'}}
+              >
+              </Badge>
             </IconButton>
-            {
-            notificationCount == 0 ? null :
-            <Badge
-              badgeContent={notificationCount || 0}
-              badgeStyle={{top: -5, right: 30, width: 18, height: 18, color: '#F3294D', borderStyle: 'solid'}}
-            >
-            </Badge>
-            }
- 
-            <ToolbarSeparator />
-
             <Popover
               open={this.state.notificationOpen}
               anchorEl={this.state.anchorEl}
@@ -148,17 +146,11 @@ class Nav extends Component {
             >
               <NotificationsDialog notifications={this.props.my_notifications} />
             </Popover>
+            <ToolbarSeparator />
+            <IconButton tooltip="Logout" href="/login">
+              <FontIcon className="material-icons">power_settings_new</FontIcon>
+            </IconButton>
 
-            <IconMenu
-              iconButtonElement={
-                <IconButton touch={true}>
-                  <NavigationExpandMoreIcon />
-                </IconButton>
-              }
-            >
-              <MenuItem primaryText="Logout" />
-              <MenuItem primaryText="More Info" />
-            </IconMenu>
           </ToolbarGroup>
         </Toolbar>
       );

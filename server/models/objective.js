@@ -9,15 +9,18 @@ var ObjectiveSchema = new Schema({
   contingency: String,
   tags: [{tid: String, name: String}],
   pobjective: {oid: String},
-  keyresults: [{name: String, owner: {eid: String, name: String}, quarter: String, target: Number, actual: Number, units: {uid: String, value: String}}]
+  cobjectives: [{oid: String, progress: Number}],
+  progress: Number,
+  createdOn: Date,
+  keyresults: [{name: String, owner: {eid: String, name: String}, quarter: String, target: Number, actual: Number, units: {uid: String, value: String}, progress: Number}]
 });
 
 ObjectiveSchema.pre('save', function(next) {
   // get the current date
   var currentDate = new Date();  
-  this.updated_at = currentDate;
-  if (!this.created_at)
-    this.created_at = currentDate;
+  this.createdOn = currentDate;
+  if (!this.createdOn)
+    this.createdOn = currentDate;
 
   next();
 });

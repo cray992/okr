@@ -1,6 +1,22 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {  browserHistory } from 'react-router';
+import TextField from 'material-ui/TextField';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import darkBlack from 'material-ui/styles/colors';
+import RaisedButton from 'material-ui/RaisedButton';
+
+const muiTheme = getMuiTheme({
+  palette: {
+    textColor: darkBlack,
+    primary1Color: "#F3294D",
+    primary2Color: "#F3294D",
+    accent1Color: "#010144",
+    pickerHeaderColor: darkBlack,
+    alternateTextColor: darkBlack
+  }
+});
 
 class Login extends Component {
 	constructor (props) {
@@ -44,11 +60,14 @@ class Login extends Component {
 		return (
 		  <div className="login-page">
 		    <form onSubmit={this.handleSubmit}>
-		    	<input value={this.state.username} onChange={this.handleUsernameChange}/>
-		    	<br />
-		    	<input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
-		    	<br />
-		    	<button type="submit">Submit</button>
+          <MuiThemeProvider muiTheme={muiTheme} >
+          	<div>
+					    <TextField hintText="User Name" value={this.state.username} onChange={this.handleUsernameChange}/><br />
+					    <br />
+					    <TextField hintText="Password" type="password" value={this.state.password} onChange={this.handlePasswordChange}/><br /> 
+					    <RaisedButton type="submit" label="Login" primary={true} style={{marginTop: 12, width: '100%'}} />
+					  </div> 
+					</MuiThemeProvider>
 		    </form>
 		  </div>
 		)

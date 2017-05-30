@@ -168,7 +168,7 @@ exports.addKeyResult = function (req, res) {
       if (err) return console.log(err);
       const notification = {
         actionurl: '/objectives/'+id,
-        notification: 'A new key result is assigned to you. Keyresult: ' + req.body.name,
+        notification: 'A new key result assigned to you. Keyresult: ' + req.body.name,
         personid: req.body.owner.eid,
         datetime: new Date(),
         status: 'Unread'
@@ -203,3 +203,105 @@ exports.getChildObjectives = function(req, res){
     return res.send(result);
   });
 };
+
+exports.getAllParentObjectives = function (req, res) {
+  const id = req.query.id;
+  var objectiveList = [];
+
+  function getParentObjective(objId) {
+    Objective.find(
+      {'_id': mongoose.Types.ObjectId(objId)}
+    ).exec((err, result) => {
+      if (err) return res.send(err);
+
+      if (result.length === 0) return res.send(objectiveList); // return if there is no futher parent
+
+      objectiveList.push(result[0]); // Push objective to list
+      if (result[0].pobjective) {
+        getParentObjective(result[0].pobjective.oid); 
+      }
+   })
+  }
+
+  var initObjective = {};
+
+  Objective.find(
+    {'_id': mongoose.Types.ObjectId(id)}
+  ).exec((err, result) => {
+      console.log('result: ', result);
+      objectiveList.push(result[0]);
+      const parentObjectiveId = result[0].pobjective.oid;
+      getParentObjective(parentObjectiveId);
+   }
+  )
+}
+
+const getPObjectives = (id) => {
+  var objectiveList = [];
+  function getParentObjective(objId) {
+    Objective.find(
+      {'_id': mongoose.Types.ObjectId(objId)}
+    ).exec((err, result) => {
+      if (err) return res.send(err);
+
+      if (result.length === 0) return objectiveList; // return if there is no futher parent
+
+      objectiveList.push(result[0]); // Push objective to list
+      if (result[0].pobjective) {
+        getParentObjective(result[0].pobjective.oid); 
+      }
+   })
+  }
+
+  var initObjective = {};
+
+  Objective.find(
+    {'_id': mongoose.Types.ObjectId(id)}
+  ).exec((err, result) => {
+      console.log('result: ', result);
+      objectiveList.push(result[0]);
+      const parentObjectiveId = result[0].pobjective.oid;
+      getParentObjective(parentObjectiveId);
+   }
+  )
+}
+
+exports.calcObjProgress = (req, res) => {
+  const id = req.query.id;
+  var objectiveList = [];
+  const list = getPObjectives(id); 
+  res.send(list);
+
+  // const callback = function(err, result) {
+  //   let list = '<table width="100%"><tbody>'
+  //   result.map( x => (list += '<tr>' + Object.keys(x).map( y => (`<td>${x[y]}</td>`) ) + '</tr>'))
+  //   list+='</tbody></table>'
+  //   return res.send(list);
+  // }
+
+  // Objective.aggregate([
+  //   {$match: {
+  //     '_id': mongoose.Types.ObjectId(objectiveId)
+  //   }},
+  //   { $unwind : "$keyresults" },
+  //   {$group: { 
+  //     _id: "$_id",
+  //     "name": { "$first": "$name" },
+  //     "krcount": { "$sum": 1 },
+  //     pcent: {
+  //       $avg: {
+  //         $divide: [
+  //           "$keyresults.actual", "$keyresults.target"
+  //         ]
+  //       }
+  //     }
+  //   }},
+  //   {$project: {
+  //     _id: 1,
+  //     name : 1,
+  //     pcent: 1,
+  //     krcount: 1
+  //   }}
+  // ]).exec(callback);
+
+}

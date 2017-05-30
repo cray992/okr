@@ -9,20 +9,21 @@ export default ( state = initialState, { type, payload } ) => {
     case "SAVE_OBJECTIVE_RETURNED":
       return {currentObjective: payload};
     case "SAVE_KEY_RESULT_RETURNED":
-
-      const newState = (
-        state.currentKeyResults ?
-          {...state, currentKeyResults: [...state.currentKeyResults, payload ] }
-          : {...state, currentKeyResults: [ payload ] }
-        ); 
-
-      return newState;
+      return {...state, currentKeyResults: payload.keyresults}
+      // const newState = (
+      //   state.currentKeyResults ?
+      //     {...state, currentKeyResults: [...state.currentKeyResults, payload ] }
+      //     : {...state, currentKeyResults: [ payload ] }
+      //   ); 
+      // return newState;
     case "GET_OBJECTIVE_COMPLETED":
       return {...state, currentObjective: payload};
     case "GET_OBJECTIVES_COMPLETED":
       return {...state, objective_results: payload};
     case "GET_CHILD_OBJECTIVES_COMPLETED":
       return {...state, current_child_objectives: payload};
+    case "GET_ALL_PARENT_OBJECTIVES_COMPLETED":
+      return {...state, current_all_parent_objectives: payload};
     case "GET_KEY_RESULTS_COMPLETED":
       return {...state, keyresults_fetch_results: payload};
     case "GET_OBJ_PROGRESS_COMPLETED":

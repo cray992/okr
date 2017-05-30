@@ -7,7 +7,7 @@ export function getMyNotificationsCompleted (data) {
 }
 
 export function getMyNotifications (data) {
-	console.log(data);
+	console.log('Fetching my notifications: ', data);
 	return (dispatch) => {
 		return fetch('http://localhost:3001/api/notifications?eid='+data+'&token='+localStorage.getItem('userToken'), {
 			method: "GET"
