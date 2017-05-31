@@ -8,8 +8,8 @@ var ObjectiveSchema = new Schema({
   category: String,
   contingency: String,
   tags: [{tid: String, name: String}],
-  pobjective: {oid: String},
-  cobjectives: [{oid: String, progress: Number}],
+  pobjective: this,//{oid: String},
+  cobjectives: [this],
   progress: Number,
   createdOn: Date,
   keyresults: [{name: String, owner: {eid: String, name: String}, quarter: String, target: Number, actual: Number, units: {uid: String, value: String}, progress: Number}]

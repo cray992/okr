@@ -10,7 +10,7 @@ var jwt = require('jsonwebtoken');
 
 router.post('/register', user.register);
 router.post('/login', user.login);
-router.get('/calcprogress', objectives.calcObjProgress);
+//router.get('/calcprogress', objectives.calcObjProgress);
 
 // router.use(function(req, res, next) {
 
@@ -38,9 +38,10 @@ router.get('/calcprogress', objectives.calcObjProgress);
 
 
 router.get('/objectives/getAllParentObjectives', objectives.getAllParentObjectives);
-router.get('/empobjprogress', objectives.getObjectivesProgress);
+// router.get('/empobjprogress', objectives.getObjectivesProgress);
 router.get('/objectives/filter', objectives.findByName);
 // router.get('/objectives/hierarchy', objectives.getParentObjectives);
+router.get('/myobjectives', objectives.findByOwner);
 
 router.get('/objectives', objectives.findAll);
 router.get('/objectives/:id', objectives.findById);

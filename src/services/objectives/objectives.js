@@ -26,8 +26,8 @@ export default ( state = initialState, { type, payload } ) => {
       return {...state, current_all_parent_objectives: payload};
     case "GET_KEY_RESULTS_COMPLETED":
       return {...state, keyresults_fetch_results: payload};
-    case "GET_OBJ_PROGRESS_COMPLETED":
-      return {...state, objective_progress_results: payload};
+    case "GET_MY_OBJECTIVES_COMPLETED":
+      return {...state, my_objectives: payload};
     case "CHECKIN_DIALOG_OPEN_REQUESTED":
       return {...state, checkin_open_flag: true, checkin_close_flag: false, checkin_submitted_flag: false};
     case "CHECKIN_DIALOG_CANCEL_REQUESTED":

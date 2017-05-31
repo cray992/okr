@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import * as actions from '../../services/objectives/objectives-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
+import TextField from 'material-ui/TextField';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -82,7 +83,15 @@ const CheckinObjectivesFormItems = (props) => {
 									<span>{x.keyresults.quarter} - {x.keyresults.name}</span>
 								</Col>
 								<Col md={4}>
-			            <Field name={x.keyresults._id} placeholder="Enter actual value" value={val} component={renderTextField}/>
+			            <Field name={x.keyresults._id} placeholder="Enter actual value" value="test" 
+			            		component={
+			            	    () => (<TextField 
+			            	    													name={x.keyresults._id}
+			            	    										      value={val}
+			            	    										      fullWidth={true}
+			            	    										      />)
+										  }
+									/>
 									<span style={style.message}>Target: {x.keyresults.target}	{x.keyresults.units.value}</span>
 									<br/><br/><br/>
 								</Col>

@@ -30,17 +30,16 @@ const styles = {
 class MyObjectives extends Component {
 	constructor (props) {
 		super(props);
-    props.actions.getObjectivesProgressByEmp(props.params.id);
+    //props.actions.getObjectivesProgressByEmp(props.params.id);
+    props.actions.getMyObjectives(props.params.id)
 	}
 
 	render () {
-		let objectives = [];
 		let empProgress = 0;
-		if (this.props.objective_progress_results) {
-			objectives = this.props.objective_progress_results.map (x => ({...x, progress: Math.round(x.pcent * 100)}) ) 
-			const sum = 0;
-			objectives.forEach( x => {sum += x.progress});
-			empProgress = Math.round(sum / objectives.length);
+		if (this.props.my_objectives) {
+			const size = this.props.my_objectives.length;
+			empProgress = size == 0 ? 0 : this.props.my_objectives.map( x => x.progress ).reduce( (x1, x2) => x1 + x2, 0) / size;
+			//empProgress = Math.Round(empProgress);
 		}
 
 		return(
@@ -49,7 +48,7 @@ class MyObjectives extends Component {
 					name="Ravi Botla"
 					title="Director, Product Development"
 					group="ETPM"
-					avatar="https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/042/06f/026affe.jpg"
+					avatar="/profiles/ravi.jpg"
 				/>
 
 				<div style={styles.profilecontainer}>
@@ -58,7 +57,7 @@ class MyObjectives extends Component {
 							<Col md={2}/>
 							<Col md={7}>
 								<br/>
-								<span style={styles.progress}> {empProgress || 0}% </span>
+								<span style={styles.progress}> {Math.round(empProgress)}% </span>
 				      	<MuiThemeProvider muiTheme={getMuiTheme()}>
 	      					<LinearProgress mode="determinate" color="#F3294D" value={empProgress} />
 								</MuiThemeProvider>
@@ -68,7 +67,7 @@ class MyObjectives extends Component {
 							<Col md={2}/>
 							<Col md={7}>
 								<br/>
-								<Objectiveslist title="My Objectives" objectives={objectives}/>
+								<Objectiveslist title="My Objectives" objectives={this.props.my_objectives}/>
 							</Col>
 						</Row>
 					</Grid>
@@ -81,7 +80,7 @@ class MyObjectives extends Component {
 // Redux hook functions to connect and fetch data from the store
 export const mapStateToProps = ( state ) => {
   return (
-  	{objective_progress_results: state.objectives.objective_progress_results}
+  	{my_objectives: state.objectives.my_objectives}
   )
 }
 

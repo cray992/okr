@@ -42,9 +42,9 @@ export function getKeyresultsCompleted (data) {
 	}
 }
 
-export function getObjectivesProgressCompleted (data) {
+export function getMyObjectivesCompleted (data) {
 	return  {
-		type: "GET_OBJ_PROGRESS_COMPLETED",
+		type: "GET_MY_OBJECTIVES_COMPLETED",
 		payload: data
 	}
 }
@@ -77,13 +77,14 @@ export function checkinClicked() {
 	}	
 }
 
-export function getObjectivesProgressByEmp(data) {
+// getObjectivesProgressByEmp
+export function getMyObjectives(data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/empobjprogress?eid='+data, {
+		return fetch('http://localhost:3001/api/myobjectives?id='+data, {
 			method: "GET"
 		})
 		.then((res) => res.json())
-		.then((data) => dispatch(getObjectivesProgressCompleted(data)))
+		.then((data) => dispatch(getMyObjectivesCompleted(data)))
 	}
 }
 
@@ -152,13 +153,13 @@ export function checkin(data) {
 
 export function saveNewObjective(data) {
 	let tags = [];
-	let pobjective = {};
+	let pobjective = '';
 	const description = data.description || '';
 	if (data.tags) {
 		tags = data.tags.map((x) => ({tid: '123', name: x.value}));
 	}
 	if (data.parent) {
-		pobjective = {oid: data.parent._id};
+		pobjective = data.parent._id; //{oid: data.parent._id};
 	}
 	return (dispatch) => {
 		return fetch('http://localhost:3001/api/objectives', {

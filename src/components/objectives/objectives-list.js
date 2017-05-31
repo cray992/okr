@@ -68,7 +68,7 @@ console.log(objective);
 	return (
 		<div>
         <ListItem
-          primaryText={objective.name + ` (${objective.krcount} key results)`}
+          primaryText={objective.name + ` (${objective.keyresults.length} key results)`}
           href={url}
 		      leftAvatar={
 		      	<div>

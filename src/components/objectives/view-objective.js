@@ -53,6 +53,19 @@ const styles = {
 	},
   chip: {
     margin: 4,
+  },
+  parentHeader: {
+		borderStyle: 'dotted',
+    borderWidth: 'thin',
+    padding: '8px',
+    backgroundColor: '#9BA1A9',
+    borderTopLeftRadius: '5px',
+    borderTopRightRadius: '5px'
+  },
+  parentBody: {
+		borderStyle: 'solid',
+    borderWidth: 'thin',
+    borderColor: '#9BA1A9'
   }
 }
 
@@ -81,6 +94,12 @@ class ViewObjective extends Component {
 
 	render () {
 		const objective = this.props.currentObjective;
+		let parentObjectives = this.props.current_all_parent_objectives;
+		if (parentObjectives) {
+			parentObjectives = parentObjectives.slice(1);
+			parentObjectives = [...parentObjectives].reverse(); //to display parent first
+		}
+
 		return (
 			<div>
 			{
@@ -104,8 +123,8 @@ class ViewObjective extends Component {
 											<br/>
 					            <MuiThemeProvider muiTheme={muiTheme} >
 					            	<div>
-													<CircularProgress mode="determinate" size={120} thickness={8} value={80}/>
-									        <span style={styles.progresstext}>{80}%</span>
+													<CircularProgress mode="determinate" size={120} thickness={8} value={this.props.currentObjective.progress}/>
+									        <span style={styles.progresstext}>{this.props.currentObjective.progress}%</span>
 								        </div>
 											</MuiThemeProvider>
 										</Col>
@@ -113,9 +132,12 @@ class ViewObjective extends Component {
 									<Row style={styles.center}>
 										<Col md={12} >
 											<br/>
+											<div style={styles.parentHeader}>Parent Objectives</div>
+											<div style={styles.parentBody}>
 					            <MuiThemeProvider muiTheme={muiTheme} >
-												<ObjectiveHierarchy parents={this.props.current_all_parent_objectives}/>
+												<Objectiveslist objectives={parentObjectives}/>
 											</MuiThemeProvider>
+											</div>
 										</Col>
 									</Row>
 								</Col>
