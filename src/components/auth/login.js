@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+import customAxios from '../../custom-axios';
 import {  browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -32,9 +32,9 @@ class Login extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		axios({
+		customAxios({
 			method: 'POST',
-			url: 'http://localhost:3001/api/login',
+			url: 'login',
 			data: {
 				username: this.state.username,
 				password: this.state.password
@@ -42,7 +42,7 @@ class Login extends Component {
 		})
 		.then(response => {
 			localStorage.setItem('userToken', response.data.token);
-			// redirect to homepage
+			// redirect to homepag
 			browserHistory.push('/');
 		})
 		.catch(console.error);

@@ -1,0 +1,21 @@
+.sectionHeader {
+  text-align: left;
+  padding-left: 10px;
+  background-color: #737D85;
+  height: 20px;
+  padding-top: 4px;
+  border-style: solid;
+  border-color: #737D85;
+  color: white;
+  width: 250px;
+  margin-bottom: 10px;
+  border-top-right-radius: 8px;
+}
+
+.sectionHeader:after {
+  content: "\00a0";
+  border-bottom: solid 3px #737D85;
+  position: absolute;
+  width: calc(70%);
+  height: 20px;
+}

@@ -22,7 +22,9 @@ class UserCtrl {
         	token: token
         })
 			} else {
-				res.send('Not found')
+		    // res.status(403).send({
+		    //     message: 'No User found.' 
+		    // });
 			}
 		});
 	}

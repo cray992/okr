@@ -83,14 +83,8 @@ const CheckinObjectivesFormItems = (props) => {
 									<span>{x.keyresults.quarter} - {x.keyresults.name}</span>
 								</Col>
 								<Col md={4}>
-			            <Field name={x.keyresults._id} placeholder="Enter actual value" value="test" 
-			            		component={
-			            	    () => (<TextField 
-			            	    													name={x.keyresults._id}
-			            	    										      value={val}
-			            	    										      fullWidth={true}
-			            	    										      />)
-										  }
+			            <Field name={x.keyresults._id} placeholder="Enter actual value" value={val}
+			            		component={renderTextField}
 									/>
 									<span style={style.message}>Target: {x.keyresults.target}	{x.keyresults.units.value}</span>
 									<br/><br/><br/>

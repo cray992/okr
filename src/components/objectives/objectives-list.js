@@ -68,7 +68,7 @@ console.log(objective);
 	return (
 		<div>
         <ListItem
-          primaryText={objective.name + ` (${objective.keyresults.length} key results)`}
+          primaryText={objective.name}
           href={url}
 		      leftAvatar={
 		      	<div>

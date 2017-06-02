@@ -7,7 +7,7 @@ import * as actions from '../../services/objectives/objectives-actions';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import PageHeader from './page-header';
-import KeyResultsList from './key-results-list';
+import ViewKeyResultsList from './view-key-results-list';
 import CircularProgress from 'material-ui/CircularProgress';
 import ObjectiveHierarchy from './objective-hierarchy';
 import CommentsContainer from '../comments/comments-container';
@@ -151,7 +151,7 @@ class ViewObjective extends Component {
 										      onChange={this.handleTabChange}
 										    >
 										      <Tab label="Key Results" value="kr">
-														<KeyResultsList keyresults={objective.keyresults}/>
+														<ViewKeyResultsList keyresults={objective.keyresults}/>
 										      </Tab>
 										      <Tab label="Linked Objectives" value="co">
 														<Objectiveslist objectives={this.props.current_child_objectives}/>

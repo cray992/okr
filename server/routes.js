@@ -19,7 +19,9 @@ router.post('/login', user.login);
 //     return next();
 //   }
 
-// 	const token = req.body.token || req.query.token;
+// console.log(req.headers);
+
+// 	const token = req.body.token || req.query.token || req.headers.authorization;
 
 //   if (token) {
 //     jwt.verify(token, configFile.secret, function(err, decoded) {      
@@ -35,7 +37,6 @@ router.post('/login', user.login);
 //     });
 //   } 
 // });
-
 
 router.get('/objectives/getAllParentObjectives', objectives.getAllParentObjectives);
 // router.get('/empobjprogress', objectives.getObjectivesProgress);
