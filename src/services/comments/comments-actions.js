@@ -1,4 +1,5 @@
 import {getMyNotifications} from '../notifications/notifications-actions';
+import customAxios from '../../custom-axios';
 
 export function getCommentsForObjectiveCompleted (data) {
 	return  {
@@ -16,17 +17,17 @@ export function saveNewCommentCompleted (data) {
 
 export function getCommentsForObjective (data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/comments?refid='+data, {
+		return customAxios('http://localhost:3001/api/comments?refid='+data, {
 			method: "GET"
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(getCommentsForObjectiveCompleted(data)))
 	}
 }
 
 export function saveNewComment(objectiveId, commentedby, data ) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/comments', {
+		return customAxios('http://localhost:3001/api/comments', {
 			method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -40,7 +41,7 @@ export function saveNewComment(objectiveId, commentedby, data ) {
       	commentedby: commentedby
       })
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((newData) => dispatch(saveNewCommentCompleted(newData)))
 		.then((x) => getMyNotifications('5912036687a30c1a28d99142'))
 	}

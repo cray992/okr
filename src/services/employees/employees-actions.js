@@ -1,3 +1,4 @@
+import customAxios from '../../custom-axios';
 
 export function getEmployeesCompleted (data) {
 	return  {
@@ -8,10 +9,10 @@ export function getEmployeesCompleted (data) {
 
 export function findEmployeesByName(data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/employees/filter?name='+data, {
+		return customAxios('http://localhost:3001/api/employees/filter?name='+data, {
 			method: "GET"
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(getEmployeesCompleted(data)))
 	}
 }

@@ -43,7 +43,7 @@ class CommentsContainer extends Component {
 
 	getUsers(searchTxt) {
 		fetch('http://localhost:3001/api/employees/filter?name='+searchTxt)
-    .then((response) => response.json())
+    .then((response) => response.data)
     .then((json) => {
     	var users = json.map(user => ({ id: user._id, display: user.name }))
     	this.setState({

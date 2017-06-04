@@ -36,7 +36,7 @@ class AutoCompleteSync extends Component {
 		const url = this.state.callbackUrl+`${input}`;
 		//this.state.callback(input);	
 		return fetch(url)
-		.then((response) => response.json())
+		.then((response) => response.data)
 		.then((json) => {
 			return { options: json };
 		});

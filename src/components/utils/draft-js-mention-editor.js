@@ -48,7 +48,7 @@ export default class DraftJSMentionEditor extends Component {
     if (value.length < 3) return; // Enter minimum three chars
 
     fetch(this.url+value)
-      .then((response) => response.json())
+      .then((response) => response.data)
       .then((data) => {
         this.setState({
           suggestions: fromJS(data.map(x => ({id: x.id, name: x.name, avatar: x.url}))),

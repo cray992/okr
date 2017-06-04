@@ -11,6 +11,7 @@ export function getMyNotificationsCompleted (data) {
 export function getMyNotifications (data) {
 	console.log('Fetching my notifications: ', data);
 	return (dispatch) => {
+		console.log(customAxios.defaults.headers)
 		return customAxios({
 			url: 'notifications?eid='+data,
 			method: "GET"

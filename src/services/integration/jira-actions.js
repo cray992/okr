@@ -1,3 +1,5 @@
+import customAxios from '../../custom-axios';
+
 export function getObjectivesCompleted (data) {
 	return  {
 		type: "GET_OBJECTIVES_COMPLETED",
@@ -11,7 +13,7 @@ export function getJiraProjects () {
 		return fetch('http://localhost:3001/api/objectives', {
 			method: "GET"
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(getObjectivesCompleted(data)))
 	}
 }

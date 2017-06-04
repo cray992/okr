@@ -1,5 +1,5 @@
-
 import {reset} from 'redux-form';
+import customAxios from '../../custom-axios';
 
 export function getObjectivesCompleted (data) {
 	return  {
@@ -80,40 +80,40 @@ export function checkinClicked() {
 // getObjectivesProgressByEmp
 export function getMyObjectives(data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/myobjectives?id='+data, {
+		return customAxios('http://localhost:3001/api/myobjectives?id='+data, {
 			method: "GET"
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(getMyObjectivesCompleted(data)))
 	}
 }
 
 export function findObjectivesByName(data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/objectives/filter?name='+data, {
+		return customAxios('http://localhost:3001/api/objectives/filter?name='+data, {
 			method: "GET"
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(getObjectivesCompleted(data)))
 	}
 }
 
 export function fetchCurrentEmployeeObjectives(eid) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/objectives/filter?eid='+eid, {
+		return customAxios('http://localhost:3001/api/objectives/filter?eid='+eid, {
 			method: "GET"
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(getObjectivesCompleted(data)))
 	}
 }
 
 export function fetchCurrentEmployeeKeyResults(eid) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/keyresults/filter?eid='+eid, {
+		return customAxios('http://localhost:3001/api/keyresults/filter?eid='+eid, {
 			method: "GET"
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(getKeyresultsCompleted(data)))
 	}
 }
@@ -133,7 +133,7 @@ export function checkin(data) {
 	const list = [...dArr];
 
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/keyresults/checkin', {
+		return customAxios('http://localhost:3001/api/keyresults/checkin', {
 			method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -146,7 +146,7 @@ export function checkin(data) {
 		.then(() => fetchCurrentEmployeeObjectives('5912036687a30c1a28d99142'))
 		.then(() => dispatch(onCheckinSubmitCompleted()))
 		.catch(function(error) {
-		  console.log('There has been a problem with your fetch operation: ' + error.message);
+		  console.log('There has been a problem with your customAxios operation: ' + error.message);
 		});
 	}
 }
@@ -162,7 +162,7 @@ export function saveNewObjective(data) {
 		pobjective = data.parent._id; //{oid: data.parent._id};
 	}
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/objectives', {
+		return customAxios('http://localhost:3001/api/objectives', {
 			method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -179,14 +179,14 @@ export function saveNewObjective(data) {
 			  tags: tags
       })
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(saveObjectiveCompleted(data)))
 	}
 }
 
 export function saveNewKeyResult(objectiveId, data) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/objectives/'+objectiveId+'/keyresults', {
+		return customAxios('http://localhost:3001/api/objectives/'+objectiveId+'/keyresults', {
 			method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -202,7 +202,7 @@ export function saveNewKeyResult(objectiveId, data) {
       	units: {uid: data.units._id, value: data.units.value}
       })
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((newData) => dispatch(saveKeyResultsCompleted(newData)))
 		.then(() => dispatch(reset('keyresultform')))
 	}
@@ -210,20 +210,20 @@ export function saveNewKeyResult(objectiveId, data) {
 
 export function getObjectiveDetails (id) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/objectives/'+id, {
+		return customAxios('http://localhost:3001/api/objectives/'+id, {
 			method: "GET"
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(getObjectiveCompleted(data)))
 	}
 }
 
 export function getChildObjectives (id) {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/childobjectives?id='+id, {
+		return customAxios('http://localhost:3001/api/childobjectives?id='+id, {
 			method: "GET"
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(getChildObjectiveCompleted(data)))
 	}
 }
@@ -231,10 +231,10 @@ export function getChildObjectives (id) {
 export function getAllParentObjectives(id) {
 	console.log('called getAllParentObjectives: ', id);
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/objectives/getAllParentObjectives?id='+id, {
+		return customAxios('http://localhost:3001/api/objectives/getAllParentObjectives?id='+id, {
 			method: "GET"
 		})
-		.then((res) => res.json())
+		.then((res) => res.data)
 		.then((data) => dispatch(getAllParentObjectiveCompleted(data)))
 	}
 }

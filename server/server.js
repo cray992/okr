@@ -21,7 +21,13 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Authorization,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
+
+    if ('OPTIONS' === req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
 });
 
 require('./models/objective'); // Load schema to have it available for server
