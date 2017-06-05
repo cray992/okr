@@ -29,7 +29,7 @@ const muiTheme = getMuiTheme({
 });
 
 export default class DraftJSMentionEditor extends Component {
-  url = this.props.url || 'http://localhost:3001/api/employees/filter?name=';
+  url = this.props.url || 'employees/filter?name=';
   state = {
     editorState: EditorState.createEmpty(),
     suggestions: fromJS([]),

@@ -3,7 +3,8 @@ import { Field, reduxForm } from 'redux-form'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 import TextField from 'material-ui/TextField';
-
+import customAxios from '../../custom-axios';
+ 
 const style = {
   error: {
     position: "relative",
@@ -89,7 +90,7 @@ export const renderSelectAsync = (props) => {
       return Promise.resolve({ options: [] });
     }
     const url = props.callbackUrl+`${input}`;
-    return fetch(url)
+    return customAxios(url)
     .then((response) => response.data)
     .then((json) => {
       return { options: json };

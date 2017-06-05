@@ -118,7 +118,7 @@ class CreateObjectives extends Component {
                           resultsValueKey="_id"
                           resultsLabelKey="name"
                           callback={this.props.empActions.findEmployeesByName}
-                          callbackUrl="http://localhost:3001/api/employees/filter?name="
+                          callbackUrl="employees/filter?name="
                           results={this.props.employee_results}
                       />
                     </Col>
@@ -146,7 +146,7 @@ class CreateObjectives extends Component {
                         resultsValueKey="_id"
                         resultsLabelKey="name"
                         callback={this.props.actions.findObjectivesByName}
-                        callbackUrl="http://localhost:3001/api/objectives/filter?name="
+                        callbackUrl="objectives/filter?name="
                         results={this.props.objective_results}
                       />
                     </Col>

@@ -13,6 +13,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as Colors from 'material-ui/styles/colors';
+import customAxios from '../../custom-axios';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -42,7 +43,7 @@ class CommentsContainer extends Component {
 	}
 
 	getUsers(searchTxt) {
-		fetch('http://localhost:3001/api/employees/filter?name='+searchTxt)
+		customAxios('employees/filter?name='+searchTxt)
     .then((response) => response.data)
     .then((json) => {
     	var users = json.map(user => ({ id: user._id, display: user.name }))

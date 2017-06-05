@@ -10,7 +10,7 @@ export function getObjectivesCompleted (data) {
 //http://localhost:8080/rest/api/latest/issue/ITSM-10
 export function getJiraProjects () {
 	return (dispatch) => {
-		return fetch('http://localhost:3001/api/objectives', {
+		return customAxios('objectives', {
 			method: "GET"
 		})
 		.then((res) => res.data)

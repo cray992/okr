@@ -17,7 +17,7 @@ export function saveNewCommentCompleted (data) {
 
 export function getCommentsForObjective (data) {
 	return (dispatch) => {
-		return customAxios('http://localhost:3001/api/comments?refid='+data, {
+		return customAxios('comments?refid='+data, {
 			method: "GET"
 		})
 		.then((res) => res.data)
@@ -27,7 +27,7 @@ export function getCommentsForObjective (data) {
 
 export function saveNewComment(objectiveId, commentedby, data ) {
 	return (dispatch) => {
-		return customAxios('http://localhost:3001/api/comments', {
+		return customAxios('comments', {
 			method: "POST",
       headers: {
         'Accept': 'application/json',

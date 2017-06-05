@@ -1,6 +1,7 @@
 import React, {PropTypes, Component} from 'react';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import customAxios from '../../custom-axios';
 
 class AutoCompleteSync extends Component {
 	constructor(props) {
@@ -35,7 +36,7 @@ class AutoCompleteSync extends Component {
 		}
 		const url = this.state.callbackUrl+`${input}`;
 		//this.state.callback(input);	
-		return fetch(url)
+		return customAxios(url)
 		.then((response) => response.data)
 		.then((json) => {
 			return { options: json };

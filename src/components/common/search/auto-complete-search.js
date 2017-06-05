@@ -15,7 +15,7 @@ const AutoCompleteSearch = (props) => {
         resultsValueKey="_id"
         resultsLabelKey="name"
         onChange={(x) => { browserHistory.push(`/objectives/${x._id}`) }}
-        callbackUrl="http://localhost:3001/api/objectives/filter?name="
+        callbackUrl="objectives/filter?name="
       />
     </form>
   )
