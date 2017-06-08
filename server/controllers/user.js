@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
 User = mongoose.model('User');
+Employee = mongoose.model('Employee');
 var config = require('../config');
 var jwt = require('jsonwebtoken');
 
@@ -17,10 +18,13 @@ class UserCtrl {
 
 			if(user) {
 				var token = jwt.sign(user,config.secret);
+				Employee.findOne({email: req.body.username}, function(error, emp) {
+	        res.json({
+	        	token: token,
+	        	empId: emp._id
+	        })
+				})
 
-        res.json({
-        	token: token
-        })
 			} else {
 		    // res.status(403).send({
 		    //     message: 'No User found.' 

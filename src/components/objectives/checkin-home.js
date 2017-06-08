@@ -31,7 +31,7 @@ class CheckinHome extends Component {
 
 	constructor (props) {
 		super (props);
-		this.eid = props.eid || '5912036687a30c1a28d99142';
+		this.eid = props.eid || this.props.current_emp_id;
 		this.props.actions.fetchCurrentEmployeeKeyResults(this.eid)
 	}
 
@@ -63,7 +63,7 @@ class CheckinHome extends Component {
 	        >
         	<div>
 	        	<br/>
-						<Checkin my_keyresults={this.props.keyresults_fetch_results}/>
+						<Checkin my_keyresults={this.props.keyresults_fetch_results} empId={this.props.current_emp_id}/>
 					</div>
 	        </Dialog>
 	      </div>
@@ -78,7 +78,8 @@ export const mapStateToProps = ( state ) => {
   	{
       keyresults_fetch_results: state.objectives.keyresults_fetch_results,
       checkin_open_flag: state.objectives.checkin_open_flag,
-      checkin_close_flag: state.objectives.checkin_close_flag
+      checkin_close_flag: state.objectives.checkin_close_flag,
+      current_emp_id: state.employees.current_emp_id
     }
   )
 }

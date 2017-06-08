@@ -7,6 +7,13 @@ export function getEmployeesCompleted (data) {
 	}
 }
 
+export function getEmployeeProfileCompleted (data) {
+	return  {
+		type: "GET_EMPLOYEE_PROFILE_COMPLETED",
+		payload: data
+	}
+}
+
 export function findEmployeesByName(data) {
 	return (dispatch) => {
 		return customAxios('employees/filter?name='+data, {
@@ -14,5 +21,15 @@ export function findEmployeesByName(data) {
 		})
 		.then((res) => res.data)
 		.then((data) => dispatch(getEmployeesCompleted(data)))
+	}
+}
+
+export function getEmpProfile(empId) {
+	return (dispatch) => {
+		return customAxios('/employees/findById?eid='+empId, {
+			method: "GET"
+		})
+		.then((res) => res.data)
+		.then((data) => dispatch(getEmployeeProfileCompleted(data)))
 	}
 }

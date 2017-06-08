@@ -1,17 +1,16 @@
+const currentEmpId = localStorage.getItem('empId');
+
 export default ( state = initialState, { type, payload } ) => {
   switch (type) {
     case "GET_EMPLOYEES_BY_NAME_COMPLETED":
-      return {employee_results: payload};
+      return {...state, employee_results: payload};
+    case "GET_EMPLOYEE_PROFILE_COMPLETED":
+    	return {...state, current_emp_obj: payload}
   	default: 
   		return state;
   }
 };
 
 const initialState = {
-  employee_results: [
-    {
-      value:"5912036687a30c1a28d99142",
-      label:"Ravi Botla"
-    }
-  ]
+  current_emp_id: currentEmpId
 }

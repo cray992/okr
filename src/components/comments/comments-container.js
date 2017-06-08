@@ -67,7 +67,7 @@ class CommentsContainer extends Component {
 		// we will check if there're mentions
 		// then create notification for each one with "value"
 
-		this.props.actions.saveNewComment(this.props.objective._id, '5912036687a30c1a28d99142', dataToServer);
+		this.props.actions.saveNewComment(this.props.objective._id, this.props.current_emp_id, dataToServer);
   	this.setState({
   		value: ''
   	});
@@ -138,7 +138,8 @@ class CommentsContainer extends Component {
 export const mapStateToProps = ( state ) => {
   return ({
 		objective_comments: state.comments.objective_comments,
-		users: [{ id: '12', display: 'ravibotla'}, { id: '13', display: 'ravinash'}, { id: '14', display: 'ravendra'}]
+      current_emp_id: state.employees.current_emp_id
+
   })
 }
 

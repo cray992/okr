@@ -5,6 +5,7 @@ var EmployeeSchema = new Schema({
   name: String,
   email: String,
   manager: String,
+  title: String,
   url: String
 });
 

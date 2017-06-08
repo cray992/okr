@@ -125,7 +125,7 @@ export function saveKeyResultsCompleted (data) {
 	}
 }
 
-export function checkin(data) {
+export function checkin(data, empId) {
 	let dArr = [];
 	for (let [k, v] of Object.entries(data)) {
 		dArr.push({id: k, actual: v});
@@ -139,11 +139,11 @@ export function checkin(data) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      data: JSON.stringify({
       	actual: list
       })
 		})
-		.then(() => fetchCurrentEmployeeObjectives('5912036687a30c1a28d99142'))
+		.then(() => fetchCurrentEmployeeObjectives(empId))
 		.then(() => dispatch(onCheckinSubmitCompleted()))
 		.catch(function(error) {
 		  console.log('There has been a problem with your customAxios operation: ' + error.message);
@@ -168,7 +168,7 @@ export function saveNewObjective(data) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      data: JSON.stringify({
       	name: data.objective,
       	description: description,
       	pobjective: pobjective,
@@ -192,7 +192,7 @@ export function saveNewKeyResult(objectiveId, data) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      data: JSON.stringify({
       	name: data.keyresult,
       	owner: {eid: data.owner._id, name: data.owner.name},
       	quarter: data.quarter,

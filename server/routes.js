@@ -19,8 +19,6 @@ router.use(function(req, res, next) {
     return next();
   }
 
-console.log(req.headers);
-
 	const tokenHeader = req.headers.authorization;
   const token = tokenHeader.replace(/Token\s/, '');
 

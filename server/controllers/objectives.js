@@ -93,15 +93,9 @@ exports.add = function(req, res) {
     {$push: {cobjectives: obj._id}}, {new: true},
     function (err, updatedRec) {
       if (err) return console.error(err);
-  });
+    });
 
-    // Create children object inside the parent
-    //console.log('Parent objective id: ' + obj.pobjective._id);
-    // Objective.update({"_id": mongoose.Types.ObjectId(obj.pobjective)}, {cobject},
-    //   function (err, numberAffected) {
-    //     if (err) return console.log(err);
-    //     res.sendStatus(202);
-    // });
+  console.log(req.body);
 
     // Create a notification
     const notification = {

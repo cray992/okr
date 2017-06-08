@@ -42,6 +42,7 @@ class Login extends Component {
 		})
 		.then(response => {
 			localStorage.setItem('userToken', response.data.token);
+			localStorage.setItem('empId', response.data.empId);
 			// redirect to homepag
 			browserHistory.push('/');
 		})

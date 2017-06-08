@@ -33,7 +33,7 @@ export function saveNewComment(objectiveId, commentedby, data ) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      data: JSON.stringify({
       	refid: objectiveId,
       	type: "Objective",
       	persons: data.mentions.map( x => x.id ),
@@ -43,6 +43,6 @@ export function saveNewComment(objectiveId, commentedby, data ) {
 		})
 		.then((res) => res.data)
 		.then((newData) => dispatch(saveNewCommentCompleted(newData)))
-		.then((x) => getMyNotifications('5912036687a30c1a28d99142'))
+		.then((x) => getMyNotifications(commentedby))
 	}
 }

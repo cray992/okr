@@ -11,7 +11,7 @@ import OrgChart from './components/org/org-chart';
 import Login from './components/auth/login';
 
 function checkLogin(nextState, replace) {
-  if(!localStorage.getItem('userToken')) {
+  if(!localStorage.getItem('userToken') || !localStorage.getItem('empId')) {
     replace({
       pathname: '/login',
       state: { nextPathname: nextState.location.pathname }
@@ -27,7 +27,7 @@ export default (
       <Route path="/org" component={OrgChart} />
       <Route path="/objectives/:id" component={ViewObjective} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/my-objectives/:id" component={MyObjectives} />
+      <Route path="/my-objectives" component={MyObjectives} />
       <Route path="/checkin" component={CheckinHome} />
       <Route path="/objective/create" component={CreateObjective} />
       <Route path="*" component={PageNotFound} />

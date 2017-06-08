@@ -65,7 +65,7 @@ class Nav extends Component {
     this.toggleSearch = this.toggleSearch.bind(this);
     this.handleOnNotificationOpen = this.handleOnNotificationOpen.bind(this);
     this.handleNotificationClose = this.handleNotificationClose.bind(this);
-    props.notificationActions.getMyNotifications('5912036687a30c1a28d99142');
+    props.notificationActions.getMyNotifications(props.current_emp_id);
   }
 
   // componentWillUpdate(props) {
@@ -115,7 +115,7 @@ class Nav extends Component {
               <FontIcon className="material-icons">assessment</FontIcon>
             </IconButton>
 
-            <IconButton tooltip="My Objectives" href="/my-objectives/5912036687a30c1a28d99142">
+            <IconButton tooltip="My Objectives" href="/my-objectives">
               <FontIcon className="material-icons">account_circle</FontIcon>
             </IconButton>
 
@@ -175,7 +175,8 @@ class Nav extends Component {
 export const mapStateToProps = ( state ) => {
   return (
     { 
-      my_notifications: state.notifications.my_notifications
+      my_notifications: state.notifications.my_notifications,
+      current_emp_id: state.employees.current_emp_id,
     }
   )
 }

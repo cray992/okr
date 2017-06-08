@@ -29,7 +29,7 @@ class Checkin extends Component {
 	constructor(props) {
 		super (props);
   	onSubmit = (data) => {
-  		props.actions.checkin(data)
+  		props.actions.checkin(data, this.props.empId)
   	}
 	}
 
