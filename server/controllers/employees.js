@@ -33,17 +33,14 @@ exports.add = function(req, res) {
 
 exports.import = function(req, res){
   Employee.create(
-    { "name": "Ravi Botla", "email": "rbotla@changehealthcare.com", "manager": "bennie.jones@McKesson.com" },
-    { "name": "Dean Quach", "email": "dquach@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "Holt Zeidler", "email": "HZeidler@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "Keith Weinheimer", "email": "kweinheimer@changehealthcare.com", "manager": "bennie.jones@McKesson.com" },
-    { "name": "Angela Hacksel-Newmark", "email": "AHACKSELNEWMARK@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "Holly Hon", "email": "hhon@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "Brian North", "email": "brian.north@changehealthcare.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "Bennie Jones", "email": "bennie.jones@McKesson.com", "manager": "jguillebeaux@changehealthcare.com" },
-    { "name": "John Guillebeaux", "email": "jguillebeaux@changehealthcare.com", "manager": "achoy@changehealthcare.com" },
-    { "name": "Alex Choy", "email": "achoy@changehealthcare.com", "manager": "NdeCrescenzo@changehealthcare.com" },
-    { "name": "Neil De Crescenzo", "email": "NdeCrescenzo@changehealthcare.com" }
+    { "name": "XXXXX", "email": "XXXXX@changehealthcare.com", "manager": "XXXXX@McKesson.com" },
+    { "name": "XXXXX", "email": "XXXXX@changehealthcare.com", "manager": "XXXXXX@changehealthcare.com" },
+    { "name": "XXXXX", "email": "XXXXX@changehealthcare.com", "manager": "XXXXXX@changehealthcare.com" },
+    { "name": "XXXXX", "email": "XXXXXX@changehealthcare.com", "manager": "XXXXXX@McKesson.com" },
+    { "name": "XXXXX", "email": "XXXXX@McKesson.com", "manager": "XXXXXX@changehealthcare.com" },
+    { "name": "XXXXX", "email": "XXXXXX@changehealthcare.com", "manager": "XXXXX@changehealthcare.com" },
+    { "name": "XXXXX", "email": "XXXXX@changehealthcare.com", "manager": "XXXXXo@changehealthcare.com" },
+    { "name": "XXXXX", "email": "XXXXXX@changehealthcare.com" }
   , function (err) {
     if (err) return console.log(err);
     return res.sendStatus(202);
