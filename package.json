@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.16.1",
+    "axios": "^0.21.1",
     "body-parser": "^1.17.1",
     "draft-js": "^0.10.1",
     "draft-js-mention-plugin": "^2.0.0-beta1",
